@@ -1,6 +1,6 @@
 /* Fit-Me · Service Worker: vollständiges Offline-Caching aller App-Dateien.
    Strategie: sofort aus dem Cache starten, im Hintergrund aktualisieren. */
-const CACHE = 'fitme-1.1.0-b3e8ae5f';
+const CACHE = 'fitme-2.0.0-c371abe5';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-180.png', './icon-512.png'];
 
 self.addEventListener('install', (e) => {

@@ -18,15 +18,35 @@
 <style>
 /* ===================== Fit-Me · Gestaltung ===================== */
 :root {
-  --bg: #0E0F12; --card: #1A1C21; --card2: #23262C; --line: rgba(245, 246, 247, 0.08);
-  --text: #F5F6F7; --muted: #9AA0A6; --acc: #C6F432; --acc-ink: #0E0F12;
-  --blue: #3A6EA5; --red: #FF5A5F; --chart-v: #4C8DF0;
+  /* Farbschema „Limette“ (Standard, dunkel) */
+  --bg: #0E0F12; --card: #1A1C21; --card2: #23262C; --card2-press: #2C3037; --line: rgba(245, 246, 247, 0.08);
+  --ov1: rgba(245, 246, 247, 0.08); --ov2: rgba(245, 246, 247, 0.12); --ov-press: rgba(245, 246, 247, 0.06); --input-line: rgba(245, 246, 247, 0.1);
+  --text: #F5F6F7; --muted: #9AA0A6; --future: rgba(154, 160, 166, 0.45);
+  --acc: #C6F432; --acc-ink: #0E0F12; --acc-soft: rgba(198, 244, 50, 0.1); --acc-mid: rgba(198, 244, 50, 0.45); --acc-line: rgba(198, 244, 50, 0.6); --acc-border: rgba(198, 244, 50, 0.3);
+  --blue: #3A6EA5; --red: #FF5A5F; --red-soft: rgba(255, 90, 95, 0.14); --red-line: rgba(255, 90, 95, 0.35); --red-bg: rgba(255, 90, 95, 0.06);
+  --amber: #F5B83D; --fig-bg: #121418; --tab-bg: rgba(14, 15, 18, 0.9); --switch-off: #3A3E45; --tip-bg: #2A2E35;
+  --shadow: rgba(0, 0, 0, 0.4); --backdrop: rgba(0, 0, 0, 0.6); --glow: 0 4px 30px rgba(0, 0, 0, 0.8);
   --r: 18px;
   --st: env(safe-area-inset-top, 0px); --sb: env(safe-area-inset-bottom, 0px);
   --sl: env(safe-area-inset-left, 0px); --sr: env(safe-area-inset-right, 0px);
   --phase: var(--acc);
   color-scheme: dark;
 }
+:root[data-theme="tuerkis"] { --acc: #2DD4BF; --acc-soft: rgba(45, 212, 191, 0.1); --acc-mid: rgba(45, 212, 191, 0.45); --acc-line: rgba(45, 212, 191, 0.6); --acc-border: rgba(45, 212, 191, 0.3); }
+:root[data-theme="orange"] { --acc: #FF9F43; --acc-soft: rgba(255, 159, 67, 0.1); --acc-mid: rgba(255, 159, 67, 0.45); --acc-line: rgba(255, 159, 67, 0.6); --acc-border: rgba(255, 159, 67, 0.3); }
+:root[data-theme="pink"] { --acc: #FF7AB6; --acc-soft: rgba(255, 122, 182, 0.1); --acc-mid: rgba(255, 122, 182, 0.45); --acc-line: rgba(255, 122, 182, 0.6); --acc-border: rgba(255, 122, 182, 0.3); }
+:root[data-theme="hell"] {
+  color-scheme: light;
+  --bg: #F2F3F5; --card: #FFFFFF; --card2: #E9EBEF; --card2-press: #DDE0E5; --line: rgba(20, 22, 26, 0.09);
+  --ov1: rgba(20, 22, 26, 0.06); --ov2: rgba(20, 22, 26, 0.1); --ov-press: rgba(20, 22, 26, 0.05); --input-line: rgba(20, 22, 26, 0.14);
+  --text: #14161A; --muted: #5F656D; --future: rgba(95, 101, 109, 0.5);
+  --acc: #3F7A0C; --acc-ink: #FFFFFF; --acc-soft: rgba(63, 122, 12, 0.1); --acc-mid: rgba(63, 122, 12, 0.4); --acc-line: rgba(63, 122, 12, 0.55); --acc-border: rgba(63, 122, 12, 0.3);
+  --blue: #2F63A0; --red: #C62E33; --red-soft: rgba(198, 46, 51, 0.1); --red-line: rgba(198, 46, 51, 0.35); --red-bg: rgba(198, 46, 51, 0.05);
+  --amber: #A86A00; --fig-bg: #EEF0F3; --tab-bg: rgba(255, 255, 255, 0.92); --switch-off: #C9CDD3; --tip-bg: #FFFFFF;
+  --shadow: rgba(20, 22, 26, 0.18); --backdrop: rgba(20, 22, 26, 0.45); --glow: 0 2px 18px rgba(255, 255, 255, 0.9);
+}
+/* Helles Schema als Web-App: Statusleiste (weiße Schrift) auf dunklem Streifen lesbar halten */
+:root[data-theme="hell"] body::before { content: ''; position: fixed; left: 0; right: 0; top: 0; height: var(--st); background: #1A1C21; z-index: 100; pointer-events: none; }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { margin: 0; height: 100%; background: var(--bg); }
 body {
@@ -52,7 +72,7 @@ svg { display: block; }
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
   display: flex; justify-content: center;
   padding: 6px calc(var(--sr) + 8px) calc(var(--sb) + 6px) calc(var(--sl) + 8px);
-  background: rgba(14, 15, 18, 0.9); border-top: 1px solid var(--line);
+  background: var(--tab-bg); border-top: 1px solid var(--line);
   -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
 }
 #tabbar .tabs { display: flex; width: 100%; max-width: 560px; justify-content: space-around; }
@@ -82,8 +102,9 @@ svg { display: block; }
 .btn-primary:active { transform: scale(0.98); }
 .btn-primary[disabled] { opacity: 0.35; }
 .btn-ghost { background: var(--card2); color: var(--text); }
-.btn-ghost:active { background: #2c3037; }
-.btn-danger { background: rgba(255, 90, 95, 0.14); color: var(--red); }
+.btn-ghost:active { background: var(--card2-press); }
+.btn-danger { background: var(--red-soft); color: var(--red); }
+.btn-small { min-height: 40px; padding: 0 14px; font-size: 14px; border-radius: 12px; }
 .btn-block { display: flex; width: 100%; }
 .btn-big { min-height: 64px; font-size: 19px; border-radius: 18px; }
 .icon-btn { width: 48px; height: 48px; display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; color: var(--text); }
@@ -97,10 +118,13 @@ svg { display: block; }
 .badges { display: flex; flex-wrap: wrap; gap: 6px; }
 .badge {
   display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 9px; border-radius: 999px;
-  background: rgba(245, 246, 247, 0.08); color: var(--muted); font-size: 12px; font-weight: 600; white-space: nowrap;
+  background: var(--ov1); color: var(--muted); font-size: 12px; font-weight: 600; white-space: nowrap;
 }
 .badge.acc { background: var(--acc); color: var(--acc-ink); }
-.badge.outline { background: transparent; box-shadow: inset 0 0 0 1px rgba(198, 244, 50, 0.6); color: var(--acc); }
+.badge.outline { background: transparent; box-shadow: inset 0 0 0 1px var(--acc-line); color: var(--acc); }
+.badge.swapped { background: var(--acc-soft); color: var(--acc); }
+.badge.rel-leichter { color: var(--text); }
+.badge.rel-schwerer { box-shadow: inset 0 0 0 1px var(--muted); background: transparent; color: var(--text); }
 .badge svg { width: 13px; height: 13px; }
 
 /* ---------- Heute ---------- */
@@ -111,24 +135,24 @@ svg { display: block; }
 .status-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
 .status-week { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.15; margin-top: 2px; }
 .status-week span { color: var(--muted); font-weight: 600; font-size: 18px; }
-.streak-pill { display: flex; align-items: center; gap: 6px; background: rgba(198, 244, 50, 0.1); color: var(--acc); padding: 8px 12px; border-radius: 14px; flex: none; }
+.streak-pill { display: flex; align-items: center; gap: 6px; background: var(--acc-soft); color: var(--acc); padding: 8px 12px; border-radius: 14px; flex: none; }
 .streak-pill svg { width: 22px; height: 22px; }
 .streak-pill b { font-size: 22px; font-weight: 800; line-height: 1; }
 .streak-pill small { color: var(--muted); font-size: 12px; font-weight: 600; line-height: 1.1; display: block; }
 .unit-row { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; font-weight: 600; }
 .dots { display: flex; gap: 6px; }
-.dots i { width: 12px; height: 12px; border-radius: 50%; background: rgba(245, 246, 247, 0.12); }
+.dots i { width: 12px; height: 12px; border-radius: 50%; background: var(--ov2); }
 .dots i.on { background: var(--acc); }
 .dots i.now { box-shadow: inset 0 0 0 2px var(--acc); background: transparent; }
 .levelbar { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; margin-top: 14px; }
-.levelbar i { height: 6px; border-radius: 3px; background: rgba(245, 246, 247, 0.1); }
+.levelbar i { height: 6px; border-radius: 3px; background: var(--ov2); }
 .levelbar i.on { background: var(--acc); }
-.levelbar i.now { background: rgba(198, 244, 50, 0.45); }
+.levelbar i.now { background: var(--acc-mid); }
 .levelbar-label { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; margin-top: 6px; }
 .plan { display: flex; gap: 12px; align-items: flex-start; }
 .plan svg { width: 22px; height: 22px; color: var(--acc); flex: none; margin-top: 2px; }
 .plan p { font-size: 16px; line-height: 1.4; }
-.done-banner { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 16px; background: rgba(198, 244, 50, 0.1); color: var(--acc); font-weight: 700; margin-bottom: 12px; }
+.done-banner { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 16px; background: var(--acc-soft); color: var(--acc); font-weight: 700; margin-bottom: 12px; }
 .done-banner svg { width: 22px; height: 22px; }
 .done-banner small { display: block; color: var(--muted); font-weight: 500; font-size: 13px; }
 .start-wrap { margin: 4px 0 16px; }
@@ -137,16 +161,27 @@ svg { display: block; }
 .routine-head .muted { font-size: 13px; }
 .group-label { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 14px 0 4px; }
 .group-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-.ex-row { display: flex; align-items: center; gap: 12px; padding: 8px 6px; margin: 0 -6px; border-radius: 12px; cursor: pointer; }
-.ex-row:active { background: rgba(245, 246, 247, 0.06); }
+.ex-row { display: flex; align-items: center; gap: 2px; margin: 0 -6px; }
+.ex-open { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 8px 6px; border-radius: 12px; text-align: left; }
+.ex-open:active { background: var(--ov-press); }
+.ex-open > span { display: block; }
+.ex-slot { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 1px; }
+.ex-main .ex-name, .ex-main .ex-meta { display: block; }
+.ex-main .ex-meta { display: flex; }
+.swap-btn { width: 44px; height: 44px; flex: none; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; color: var(--acc); background: var(--acc-soft); }
+.swap-btn svg { width: 20px; height: 20px; }
+.swap-btn:active { transform: scale(0.95); }
 .routine-tip { color: var(--muted); font-size: 13px; margin: 2px 0 2px; }
-.pv-fig { height: 230px; background: #121418; border-radius: 16px; margin: 4px 0 12px; overflow: hidden; }
+.routine-tip svg { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; color: var(--acc); }
+.link-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 6px; color: var(--acc); font-weight: 650; font-size: 14px; }
+.link-btn svg { width: 18px; height: 18px; }
+.pv-fig { height: 230px; background: var(--fig-bg); border-radius: 16px; margin: 4px 0 12px; overflow: hidden; }
 .pv-fig svg { width: 100%; height: 100%; }
 .pv-badges { margin-bottom: 10px; }
 .pv-note { font-size: 14px; }
 .ex-row + .ex-row { border-top: 1px solid var(--line); }
 .ex-idx { width: 18px; text-align: center; color: var(--muted); font-size: 13px; font-weight: 700; flex: none; }
-.thumb { width: 64px; height: 56px; border-radius: 12px; background: #121418; flex: none; overflow: hidden; }
+.thumb { width: 64px; height: 56px; border-radius: 12px; background: var(--fig-bg); flex: none; overflow: hidden; }
 .thumb svg { width: 100%; height: 100%; }
 .ex-main { flex: 1; min-width: 0; }
 .ex-name { font-weight: 650; line-height: 1.25; }
@@ -169,7 +204,7 @@ svg { display: block; }
 .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
 .cal .wd { font-size: 12px; font-weight: 700; color: var(--muted); padding: 4px 0 6px; }
 .cal .d { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; border-radius: 50%; position: relative; max-height: 52px; }
-.cal .d.future { color: rgba(154, 160, 166, 0.45); }
+.cal .d.future { color: var(--future); }
 .cal .d.trained { background: var(--acc); color: var(--acc-ink); font-weight: 800; }
 .cal .d.today { box-shadow: inset 0 0 0 2px var(--text); }
 .cal .d.trained.today { box-shadow: inset 0 0 0 2px var(--acc-ink), 0 0 0 2px var(--acc); }
@@ -197,8 +232,8 @@ svg { display: block; }
 .chart-wrap { position: relative; }
 .chart-wrap svg { width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
 .chart-tip {
-  position: absolute; top: 0; pointer-events: none; background: #2a2e35; border-radius: 10px; padding: 8px 10px;
-  font-size: 13px; line-height: 1.35; white-space: nowrap; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); display: none; z-index: 2;
+  position: absolute; top: 0; pointer-events: none; background: var(--tip-bg); border-radius: 10px; padding: 8px 10px;
+  font-size: 13px; line-height: 1.35; white-space: nowrap; box-shadow: 0 6px 20px var(--shadow); display: none; z-index: 2;
 }
 .chart-tip b { display: block; font-size: 12px; color: var(--muted); font-weight: 650; margin-bottom: 2px; }
 .chart-tip i { display: inline-block; width: 9px; height: 9px; margin-right: 6px; }
@@ -221,7 +256,7 @@ table.vals th { color: var(--muted); font-weight: 650; font-size: 12px; }
 .list-item .ic { width: 36px; height: 36px; border-radius: 10px; background: var(--card2); display: flex; align-items: center; justify-content: center; flex: none; }
 .list-item .ic svg { width: 20px; height: 20px; }
 .list-item .ic.acc { color: var(--acc); }
-.switch { width: 52px; height: 32px; border-radius: 16px; background: #3a3e45; position: relative; flex: none; transition: background 0.2s; }
+.switch { width: 52px; height: 32px; border-radius: 16px; background: var(--switch-off); position: relative; flex: none; transition: background 0.2s; }
 .switch::after { content: ''; position: absolute; top: 3px; left: 3px; width: 26px; height: 26px; border-radius: 50%; background: #fff; transition: transform 0.2s; }
 .switch.on { background: var(--acc); }
 .switch.on::after { transform: translateX(20px); background: var(--acc-ink); }
@@ -244,12 +279,13 @@ body.layer-open #app { display: none; }
 .field > span { display: block; font-size: 13px; font-weight: 700; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.02em; }
 .input {
   width: 100%; min-height: 52px; padding: 13px 14px; border-radius: 14px; background: var(--card);
-  border: 1px solid rgba(245, 246, 247, 0.1); outline: none; font-size: 17px; resize: none;
+  border: 1px solid var(--input-line); outline: none; font-size: 17px; resize: none;
 }
 .input:focus { border-color: var(--acc); }
 textarea.input { line-height: 1.4; }
 .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-.safety { border: 1px solid rgba(255, 90, 95, 0.35); background: rgba(255, 90, 95, 0.06); }
+.safety { border: 1px solid var(--red-line); background: var(--red-bg); }
+.inline-link { color: var(--acc); font-weight: 650; text-decoration: underline; text-underline-offset: 2px; min-height: 0; }
 .safety b { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .safety svg { width: 20px; height: 20px; color: var(--red); }
 .check { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; font-weight: 650; }
@@ -275,7 +311,7 @@ textarea.input { line-height: 1.4; }
 .success h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
 .success .lead { color: var(--muted); margin-top: 6px; font-size: 17px; }
 .success .stat-row { margin-top: 20px; text-align: left; }
-.tip-card { text-align: left; border: 1px solid rgba(198, 244, 50, 0.3); margin-top: 18px; opacity: 0; transform: translateY(14px); transition: opacity 0.45s, transform 0.45s; }
+.tip-card { text-align: left; border: 1px solid var(--acc-border); margin-top: 18px; opacity: 0; transform: translateY(14px); transition: opacity 0.45s, transform 0.45s; }
 .tip-card.show { opacity: 1; transform: none; }
 .tip-card .eyebrow { color: var(--acc); display: flex; align-items: center; gap: 6px; }
 .tip-card .eyebrow svg { width: 16px; height: 16px; }
@@ -289,7 +325,7 @@ textarea.input { line-height: 1.4; }
 .compare .arr svg { width: 28px; height: 28px; }
 
 /* Dialog */
-.dlg-back { position: fixed; inset: 0; z-index: 70; background: rgba(0, 0, 0, 0.6); display: flex; align-items: flex-end; justify-content: center; padding: 16px calc(var(--sr) + 12px) calc(var(--sb) + 12px) calc(var(--sl) + 12px); }
+.dlg-back { position: fixed; inset: 0; z-index: 70; background: var(--backdrop); display: flex; align-items: flex-end; justify-content: center; padding: 16px calc(var(--sr) + 12px) calc(var(--sb) + 12px) calc(var(--sl) + 12px); }
 .dlg { width: 100%; max-width: 480px; max-height: 86vh; overflow-y: auto; background: var(--card); border-radius: 22px; padding: 20px; animation: up 0.22s ease-out; }
 .dlg h2 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
 .dlg .txt { color: var(--muted); line-height: 1.45; }
@@ -299,6 +335,59 @@ textarea.input { line-height: 1.4; }
 .dlg ol { padding-left: 20px; margin: 8px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
 .dlg ol li + li { margin-top: 6px; }
 @keyframes up { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+/* Vorschau: Achte auf / Typische Fehler */
+.cues { margin-top: 14px; display: grid; gap: 6px; }
+.cue-head { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 4px; }
+.cue-head svg { width: 17px; height: 17px; }
+.cue-head.ok { color: var(--acc); }
+.cue-head.bad { color: var(--red); }
+.cues ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.cues li { position: relative; padding-left: 18px; line-height: 1.4; color: var(--text); font-size: 15px; }
+.cues li::before { content: ''; position: absolute; left: 3px; top: 0.55em; width: 7px; height: 7px; border-radius: 50%; background: var(--acc); }
+.cues ul.bad li::before { background: var(--red); border-radius: 1px; }
+.ref-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 14px; font-weight: 650; min-height: 44px; }
+.ref-link svg { width: 16px; height: 16px; flex: none; }
+/* Tauschen */
+.swap-cur { color: var(--text); }
+.swap-info { font-size: 14px; }
+.swap-perm { margin: 12px 0 6px; align-items: flex-start; padding: 10px 12px; border-radius: 14px; background: var(--card2); }
+.swap-perm input { margin-top: 1px; }
+.swap-perm small { display: block; color: var(--muted); font-weight: 500; font-size: 13px; margin-top: 2px; }
+.alt-list { display: grid; gap: 2px; margin-top: 6px; }
+.alt { display: flex; align-items: center; gap: 12px; padding: 8px 6px; border-radius: 12px; text-align: left; width: 100%; }
+.alt:active { background: var(--ov-press); }
+.alt + .alt { border-top: 1px solid var(--line); }
+.alt-main { flex: 1; min-width: 0; display: block; }
+.alt-main .ex-name { display: block; margin-bottom: 5px; }
+.alt-main .badges { display: flex; }
+/* Ersetzungen */
+.ers-list { margin-top: 10px; }
+.ers-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+.ers-row .grow { flex: 1; min-width: 0; }
+.ers-new { font-weight: 650; }
+.ers-old { color: var(--muted); font-size: 13px; }
+.empty-note { color: var(--muted); font-size: 14px; line-height: 1.45; padding: 6px 0; }
+/* Sicher trainieren */
+.ampel { display: grid; gap: 8px; margin-top: 12px; }
+.amp { border-radius: 14px; padding: 10px 12px 10px 14px; background: var(--card2); border-left: 5px solid; }
+.amp b { display: block; margin-bottom: 2px; }
+.amp span, .safe-list span { color: var(--muted); font-size: 14px; line-height: 1.4; display: block; }
+.amp.g { border-color: var(--acc); }
+.amp.y { border-color: var(--amber); }
+.amp.r { border-color: var(--red); }
+.safe-list { display: grid; gap: 10px; margin: 14px 0 12px; }
+.safe-list b { display: block; }
+/* Farbschema */
+.theme-card { padding: 12px; }
+.theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.theme-opt { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 4px 8px; border-radius: 14px; font-size: 13px; font-weight: 650; color: var(--muted); min-height: 44px; }
+.theme-opt[aria-checked="true"] { background: var(--card2); color: var(--text); box-shadow: inset 0 0 0 2px var(--acc); }
+.sw { width: 40px; height: 40px; border-radius: 50%; background: #0E0F12; border: 1px solid rgba(154, 160, 166, 0.45); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+.sw i { width: 18px; height: 18px; border-radius: 50%; }
+.sw-light { background: #F2F3F5; }
+.sw-auto { background: linear-gradient(135deg, #0E0F12 50%, #F2F3F5 50%); }
+.sw-auto i { background: linear-gradient(135deg, #C6F432 50%, #3F7A0C 50%); }
+.theme-note { color: var(--muted); font-size: 13px; margin: 10px 4px 2px; line-height: 1.4; }
 @media (min-width: 700px) { .dlg-back { align-items: center; } }
 
 #toast { position: fixed; left: 50%; bottom: calc(var(--sb) + 92px); transform: translate(-50%, 20px); background: var(--text); color: var(--bg); padding: 12px 16px; border-radius: 14px; font-weight: 650; font-size: 15px; z-index: 80; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; max-width: calc(100vw - 32px); text-align: center; }
@@ -315,7 +404,7 @@ textarea.input { line-height: 1.4; }
 .tr-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; position: relative; }
 .tr-prog { text-align: center; font-size: 14px; font-weight: 650; color: var(--muted); line-height: 1.25; }
 .tr-prog b { color: var(--text); font-size: 16px; display: block; }
-.tr-bar { height: 4px; border-radius: 2px; background: rgba(245, 246, 247, 0.1); margin: 6px 4px 0; overflow: hidden; position: relative; }
+.tr-bar { height: 4px; border-radius: 2px; background: var(--ov2); margin: 6px 4px 0; overflow: hidden; position: relative; }
 .tr-bar i { position: absolute; left: 0; top: 0; bottom: 0; background: var(--phase); border-radius: 2px; width: 0; }
 .tr-main { flex: 1; min-height: 0; display: grid; grid-template-rows: auto minmax(120px, 1fr) auto auto; gap: 4px; position: relative; padding-top: 10px; }
 .tr-head { text-align: center; }
@@ -327,7 +416,7 @@ textarea.input { line-height: 1.4; }
 .tr-hint { text-align: center; color: var(--muted); font-size: clamp(15px, 3.9vw, 19px); line-height: 1.35; max-width: 560px; margin: 0 auto; min-height: 2.7em; }
 .tr-clock { position: relative; width: min(62vw, 34vh, 300px); aspect-ratio: 1; margin: 6px auto 0; cursor: pointer; }
 .tr-clock svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-.tr-clock .track { stroke: rgba(245, 246, 247, 0.1); }
+.tr-clock .track { stroke: var(--ov2); }
 .tr-clock .prog { stroke: var(--phase); transition: stroke 0.3s; }
 .tr-num {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -340,7 +429,7 @@ textarea.input { line-height: 1.4; }
 .tr-side, .tr-paused {
   position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); text-align: center; pointer-events: none;
   font-size: clamp(34px, 9vw, 64px); font-weight: 900; letter-spacing: -0.02em; color: var(--acc);
-  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8); opacity: 0; transition: opacity 0.25s;
+  text-shadow: var(--glow); opacity: 0; transition: opacity 0.25s;
 }
 .tr-side.show { opacity: 1; animation: sidepop 1.8s ease-out; }
 .tr-side.pre { opacity: 1; color: var(--text); font-size: clamp(24px, 6.5vw, 42px); }
@@ -349,6 +438,9 @@ textarea.input { line-height: 1.4; }
 .training.is-paused .tr-main, .training.is-paused .tr-controls { opacity: 0.25; }
 .tr-paused small { display: block; font-size: 17px; font-weight: 600; color: var(--muted); margin-top: 6px; letter-spacing: 0; }
 .tr-next-floor { color: var(--acc); font-weight: 700; }
+.tr-cue { display: flex; align-items: center; justify-content: center; gap: 6px; color: var(--acc); font-weight: 750; margin-bottom: 4px; }
+.tr-cue svg { width: 1.05em; height: 1.05em; flex: none; }
+.tr-hint-txt { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
 #flash { position: fixed; inset: 0; z-index: 90; background: var(--acc); opacity: 0; pointer-events: none; }
 #flash.on { animation: flash 300ms ease-out; }
@@ -379,6 +471,7 @@ textarea.input { line-height: 1.4; }
 }
 
 </style>
+<script>/* Farbschema vor dem ersten Zeichnen setzen (kein Aufblitzen) */try{var t=JSON.parse(localStorage.getItem('fitme')||'{}').farbschema;if(t==='auto')t=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?'hell':'lime';if(t&&t!=='lime')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 </head>
 <body>
 <div id="app" hidden><main id="view"></main><nav id="tabbar" aria-label="Hauptbereiche"></nav></div>
@@ -388,7 +481,7 @@ textarea.input { line-height: 1.4; }
 <noscript><p style="padding:24px;color:#F5F6F7">Fit-Me braucht JavaScript.</p></noscript>
 <script>
 window.FM = window.FM || {};
-FM.APP_VERSION = "1.1.0";
+FM.APP_VERSION = "2.0.0";
 FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAZbbW9vdgAAAGxtdmhkAAAAAAAAAAAAAAAAAAAD6AAAA+gAAQAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwAAAph0cmFrAAAAXHRraGQAAAADAAAAAAAAAAAAAAABAAAAAAAAA+gAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAABAAAAAABAAAAAQAAAAAAAkZWR0cwAAABxlbHN0AAAAAAAAAAEAAAPoAAAAAAABAAAAAAIQbWRpYQAAACBtZGhkAAAAAAAAAAAAAAAAAAAoAAAAKABVxAAAAAAALWhkbHIAAAAAAAAAAHZpZGUAAAAAAAAAAAAAAABWaWRlb0hhbmRsZXIAAAABu21pbmYAAAAUdm1oZAAAAAEAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAAXtzdGJsAAAAt3N0c2QAAAAAAAAAAQAAAKdhdmMxAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAABAAEABIAAAASAAAAAAAAAABFUxhdmM2MC4zMS4xMDIgbGlieDI2NAAAAAAAAAAAAAAAGP//AAAALWF2Y0MBQsAe/+EAFWdCwB7aewEQAAADABAAAAMBQPFi6gEABWjOAZcgAAAAEHBhc3AAAAABAAAAAQAAABRidHJ0AAAAAAAAFpgAABaYAAAAGHN0dHMAAAAAAAAAAQAAAAoAAAQAAAAAFHN0c3MAAAAAAAAAAQAAAAEAAAAcc3RzYwAAAAAAAAABAAAAAQAAAAEAAAABAAAAPHN0c3oAAAAAAAAAAAAAAAoAAAKCAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAACQAAAAkAAAAJAAAAOHN0Y28AAAAAAAAACgAABqAAAAkuAAAJPwAACVAAAAlhAAAJcgAACYMAAAmYAAAJqQAACboAAALtdHJhawAAAFx0a2hkAAAAAwAAAAAAAAAAAAAAAgAAAAAAAAPoAAAAAAAAAAAAAAABAQAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAJGVkdHMAAAAcZWxzdAAAAAAAAAABAAAD6AAABAAAAQAAAAACZW1kaWEAAAAgbWRoZAAAAAAAAAAAAAAAAAAAViIAAFoiVcQAAAAAAC1oZGxyAAAAAAAAAABzb3VuAAAAAAAAAAAAAAAAU291bmRIYW5kbGVyAAAAAhBtaW5mAAAAEHNtaGQAAAAAAAAAAAAAACRkaW5mAAAAHGRyZWYAAAAAAAAAAQAAAAx1cmwgAAAAAQAAAdRzdGJsAAAAfnN0c2QAAAAAAAAAAQAAAG5tcDRhAAAAAAAAAAEAAAAAAAAAAAABABAAAAAAViIAAAAAADZlc2RzAAAAAAOAgIAlAAIABICAgBdAFQAAAAAAH0AAAANBBYCAgAUTiFblAAaAgIABAgAAABRidHJ0AAAAAAAAH0AAAANBAAAAIHN0dHMAAAAAAAAAAgAAABYAAAQAAAAAAQAAAiIAAABMc3RzYwAAAAAAAAAFAAAAAQAAAAEAAAABAAAAAgAAAAMAAAABAAAAAwAAAAIAAAABAAAACAAAAAMAAAABAAAACQAAAAIAAAABAAAAcHN0c3oAAAAAAAAAAAAAABcAAAAVAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAADxzdGNvAAAAAAAAAAsAAAaLAAAJIgAACTcAAAlIAAAJWQAACWoAAAl7AAAJjAAACaEAAAmyAAAJwwAAABpzZ3BkAQAAAHJvbGwAAAACAAAAAf//AAAAHHNiZ3AAAAAAcm9sbAAAAAEAAAAXAAAAAQAAAGJ1ZHRhAAAAWm1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAALWlsc3QAAAAlqXRvbwAAAB1kYXRhAAAAAQAAAABMYXZmNjAuMTYuMTAwAAAACGZyZWUAAANIbWRhdN4CAExhdmM2MC4zMS4xMDIAAjBADgAAAm4GBf//atxF6b3m2Ui3lizYINkj7u94MjY0IC0gY29yZSAxNjQgcjMxMDggMzFlMTlmOSAtIEguMjY0L01QRUctNCBBVkMgY29kZWMgLSBDb3B5bGVmdCAyMDAzLTIwMjMgLSBodHRwOi8vd3d3LnZpZGVvbGFuLm9yZy94MjY0Lmh0bWwgLSBvcHRpb25zOiBjYWJhYz0wIHJlZj0xIGRlYmxvY2s9MTowOjAgYW5hbHlzZT0weDE6MHgxIG1lPWhleCBzdWJtZT0yIHBzeT0xIHBzeV9yZD0xLjAwOjAuMDAgbWl4ZWRfcmVmPTAgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0wIDh4OGRjdD0wIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PTAgdGhyZWFkcz0xIGxvb2thaGVhZF90aHJlYWRzPTEgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MCB3ZWlnaHRwPTAga2V5aW50PTI1MCBrZXlpbnRfbWluPTEwIHNjZW5lY3V0PTQwIGludHJhX3JlZnJlc2g9MCByY19sb29rYWhlYWQ9MTAgcmM9Y3JmIG1idHJlZT0xIGNyZj01MS4wIHFjb21wPTAuNjAgcXBtaW49MCBxcG1heD02OSBxcHN0ZXA9NCBpcF9yYXRpbz0xLjQwIGFxPTE6MS4wMACAAAAADGWIhA3///w9FAAfgAEYIAcBGCAHARggBwAAAAVBmiA31AEYIAcBGCAHAAAABUGaQDfUARggBwEYIAcAAAAFQZpgN9QBGCAHARggBwAAAAVBmoA31AEYIAcBGCAHAAAABUGaoDfUARggBwEYIAcAAAAFQZrAN9QBGCAHARggBwEYIAcAAAAFQZrgM9QBGCAHARggBwAAAAVBmwAz1AEYIAcBGCAHAAAABUGbIC/UARggBwEYIAc=";
 
 /* ---- figure.js ---- */
@@ -405,7 +498,7 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
 
   var LEN = FM.LEN = { r: 11, neck: 18, T: 52, UA: 28, FA: 26, TH: 44, SH: 42, F: 10, SW: 16, HW: 9, SD: 3 };
   var VW = 240, VH = 200, VY = -14, GROUND = 190;
-  var COL = { fg: '#F5F6F7', bg: '#9AA0A6', acc: '#C6F432', accBack: '#7E9A2A', ink: '#0E0F12' };
+  var COL = { fg: '#F5F6F7', bg: '#9AA0A6', acc: '#C6F432', accBack: '#7E9A2A', ink: '#0E0F12', env: '#9AA0A6' };
   var R = Math.PI / 180;
   var SVGNS = 'http://www.w3.org/2000/svg';
 
@@ -636,8 +729,8 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
 
   function envMarkup(env, view) {
     var s = '';
-    var gl = 'stroke="#9AA0A6" stroke-linecap="round" fill="none"';
-    if (env.panel) s += '<rect x="' + env.panel[0] + '" y="18" width="' + (env.panel[1] - env.panel[0]) + '" height="174" rx="4" fill="#9AA0A6" fill-opacity="0.07" stroke="#9AA0A6" stroke-opacity="0.22" stroke-width="1.5"/>';
+    var E = COL.env, gl = 'stroke="' + E + '" stroke-linecap="round" fill="none"';
+    if (env.panel) s += '<rect x="' + env.panel[0] + '" y="18" width="' + (env.panel[1] - env.panel[0]) + '" height="174" rx="4" fill="' + E + '" fill-opacity="0.07" stroke="' + E + '" stroke-opacity="0.22" stroke-width="1.5"/>';
     if (env.ground !== false) s += '<line x1="8" y1="' + (GROUND + 2) + '" x2="232" y2="' + (GROUND + 2) + '" ' + gl + ' stroke-width="2" stroke-opacity="0.38"/>';
     if (env.wall !== undefined) s += '<line x1="' + env.wall + '" y1="24" x2="' + env.wall + '" y2="' + (GROUND + 2) + '" ' + gl + ' stroke-width="3" stroke-opacity="0.45"/>';
     if (env.door) {
@@ -650,7 +743,7 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
       s += '<line x1="99" y1="' + y + '" x2="97" y2="' + (GROUND + 2) + '" ' + gl + ' stroke-width="3" stroke-opacity="0.4"/>';
       s += '<line x1="141" y1="' + y + '" x2="143" y2="' + (GROUND + 2) + '" ' + gl + ' stroke-width="3" stroke-opacity="0.4"/>';
     }
-    if (env.mat) s += '<rect x="' + env.mat[0] + '" y="' + env.mat[1] + '" width="' + env.mat[2] + '" height="' + env.mat[3] + '" rx="10" fill="#9AA0A6" fill-opacity="0.06" stroke="#9AA0A6" stroke-opacity="0.25" stroke-width="1.5"/>';
+    if (env.mat) s += '<rect x="' + env.mat[0] + '" y="' + env.mat[1] + '" width="' + env.mat[2] + '" height="' + env.mat[3] + '" rx="10" fill="' + E + '" fill-opacity="0.06" stroke="' + E + '" stroke-opacity="0.25" stroke-width="1.5"/>';
     return s;
   }
 
@@ -827,6 +920,8 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     return holder.innerHTML.replace(/ ?fm-(pulse|arrow)/g, '');
   }
 
+  // Farben je Farbschema (hell/dunkel, Akzent) – gilt für neu gezeichnete Figuren
+  FM.setFigureColors = function (o) { for (var k in o) if (Object.prototype.hasOwnProperty.call(COL, k)) COL[k] = o[k]; };
   FM.Figure = Figure;
   FM.figureThumb = thumb;
   FM.figureSample = sample;
@@ -861,7 +956,9 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     // 5 Bauchlage (Kopf rechts)
     prone: { p: [100, 182], t: 0, h: -8, a1: [176, 179], a2: [178, 180], l1: [180, 180], l2: [181, 181] },
     // 6 Sitzen, Rückansicht (S1–S5)
-    backSit: { p: [120, 139], t: -90, h: -90, a1: [98, 94], a2: [82, 86], l1: { u: 112, l: 93, ku: 0.22 }, l2: { u: 68, l: 87, ku: 0.22 } }
+    backSit: { p: [120, 139], t: -90, h: -90, a1: [98, 94], a2: [82, 86], l1: { u: 112, l: 93, ku: 0.22 }, l2: { u: 68, l: 87, ku: 0.22 } },
+    // 7 Sitz am Boden frontal, Beine angewinkelt (Ausklang)
+    sitFront: { p: [120, 175], t: -90, h: -90, a1: { ik: [-17, 3], rel: 'P', b: -1 }, a2: { ik: [17, 3], rel: 'P', b: 1 }, l1: { u: 166, l: 14, ku: 0.8, kl: 0.62, f: 0, fk: 0.5 }, l2: { u: 14, l: 166, ku: 0.8, kl: 0.62, f: 180, fk: 0.5 } }
   };
 
   var STAND_ARMS = { a1: [86, 82], a2: [93, 96] };
@@ -1280,13 +1377,13 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
       kf: [[0, { sq: 1, se: -2, a1: { ik: [117, 141], b: -1 }, a2: { ik: [123, 141], b: 1 } }]]
     },
     s2: {
-      v: 'back', base: 'backSit', dur: 3.6, hl: ['scap', 'shoulders'], thumb: 0.5, env: { seat: 146 },
+      v: 'back', base: 'frontStand', dur: 3.6, hl: ['scap', 'shoulders'], thumb: 0.5,
       arrows: [{ at: 'a1.J', o: [-13, 0], a: 0, len: 9, win: [0.02, 0.8] }, { at: 'a2.J', o: [13, 0], a: 180, len: 9, win: [0.02, 0.8] }],
       kf: [
-        [0, { sq: 0, a1: { ik: [110, 128], b: -1 }, a2: { ik: [130, 128], b: 1 } }],
-        [0.3, { sq: 1, a1: { ik: [110, 128], b: -0.45 }, a2: { ik: [130, 128], b: 0.45 } }],
-        [0.8, { sq: 1, a1: { ik: [110, 128], b: -0.45 }, a2: { ik: [130, 128], b: 0.45 } }],
-        [1, { sq: 0, a1: { ik: [110, 128], b: -1 }, a2: { ik: [130, 128], b: 1 } }]
+        [0, { sq: 0, a1: { ik: [110, 90], b: -1 }, a2: { ik: [130, 90], b: 1 } }],
+        [0.3, { sq: 1, a1: { ik: [110, 90], b: -0.45 }, a2: { ik: [130, 90], b: 0.45 } }],
+        [0.8, { sq: 1, a1: { ik: [110, 90], b: -0.45 }, a2: { ik: [130, 90], b: 0.45 } }],
+        [1, { sq: 0, a1: { ik: [110, 90], b: -1 }, a2: { ik: [130, 90], b: 1 } }]
       ]
     },
     s3: {
@@ -1302,30 +1399,184 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
       arrows: [{ at: 'a1.E', o: [2, -3], a: -60, len: 8 }, { at: 'a2.E', o: [-2, 3], a: 120, len: 8 }],
       kf: [[0, { a1: [115, -35], a2: [-62, 141] }]]
     },
+    /* T-Arme (Version 2): Fingerspitzen an den Schläfen → Arme seitlich zum T strecken → zurück */
     s5: {
-      v: 'back', base: 'backSit', dur: 1.1, hl: ['scap', 'shoulders'], thumb: 0.5, env: { seat: 146 },
-      arrows: [{ at: 'NB', o: [-24, 14], a: 0, len: 8 }, { at: 'NB', o: [24, 14], a: 180, len: 8 }],
-      kf: [[0, { sq: 0.55, a1: [180, 180], a2: [0, 0] }], [0.5, { sq: 1, a1: [182, 182], a2: [-2, -2] }], [1, { sq: 0.55, a1: [180, 180], a2: [0, 0] }]]
+      v: 'back', base: 'frontStand', dur: 5.0, hl: ['scap', 'shoulders', 'arms'], thumb: 0.45,
+      arrows: [{ at: 'a1.E', o: [-4, 0], a: 180, len: 10, win: [0.06, 0.28] }, { at: 'a2.E', o: [4, 0], a: 0, len: 10, win: [0.06, 0.28] }],
+      kf: [
+        [0, { sq: 0, a1: [233, 365], a2: [-53, -185] }],
+        [0.08, { sq: 0, a1: [233, 365], a2: [-53, -185] }],
+        [0.19, { sq: 0.4, a1: [196, 270], a2: [-16, -90] }],
+        [0.3, { sq: 1, a1: [180, 180], a2: [0, 0] }],
+        [0.64, { sq: 1, a1: [180, 180], a2: [0, 0] }],
+        [0.75, { sq: 0.4, a1: [196, 270], a2: [-16, -90] }],
+        [0.86, { sq: 0, a1: [233, 365], a2: [-53, -185] }],
+        [1, { sq: 0, a1: [233, 365], a2: [-53, -185] }]
+      ]
+    },
+
+    /* ================= Neu in Version 2 ================= */
+    marsch_pfluecken: {
+      v: 'side', base: 'sideStand', dur: 2.0, hl: ['arms', 'shoulders'], thumb: 0,
+      kf: [
+        [0, { p: [118, 101], t: -88, l1: [25, 100], l2: [90, 90], a1: [104, 98], a2: [-86, -88] }],
+        [0.25, { p: [118, 103.5], t: -90, l1: [86, 94], l2: [88, 92], a1: [18, -30], a2: [26, 52] }],
+        [0.5, { p: [118, 101], t: -88, l1: [90, 90], l2: [25, 100], a1: [-86, -88], a2: [104, 98] }],
+        [0.75, { p: [118, 103.5], t: -90, l1: [88, 92], l2: [86, 94], a1: [26, 52], a2: [18, -30] }],
+        [1, { p: [118, 101], t: -88, l1: [25, 100], l2: [90, 90], a1: [104, 98], a2: [-86, -88] }]
+      ]
+    },
+    ellbogen_oeffner: {
+      v: 'back', base: 'frontStand', dur: 5.0, hl: ['scap', 'shoulders'], thumb: 0.15,
+      arrows: [{ at: 'NB', o: [-24, 15], a: 0, len: 8, win: [0.02, 0.34] }, { at: 'NB', o: [24, 15], a: 180, len: 8, win: [0.02, 0.34] }],
+      kf: [
+        [0, { sq: 1, a1: { ik: [-4, 0], rel: 'HC', b: 1 }, a2: { ik: [4, 0], rel: 'HC', b: -1 } }],
+        [0.36, { sq: 1, a1: { ik: [-4, 0], rel: 'HC', b: 1 }, a2: { ik: [4, 0], rel: 'HC', b: -1 } }],
+        [0.54, { sq: 0, a1: { ik: [-4, 0], rel: 'HC', b: 1, ku: 0.62, kl: 0.38, d: 'b' }, a2: { ik: [4, 0], rel: 'HC', b: -1, ku: 0.62, kl: 0.38, d: 'b' } }],
+        [0.74, { sq: 0, a1: { ik: [-4, 0], rel: 'HC', b: 1, ku: 0.62, kl: 0.38, d: 'b' }, a2: { ik: [4, 0], rel: 'HC', b: -1, ku: 0.62, kl: 0.38, d: 'b' } }],
+        [1, { sq: 1, a1: { ik: [-4, 0], rel: 'HC', b: 1 }, a2: { ik: [4, 0], rel: 'HC', b: -1 } }]
+      ]
+    },
+    sumo: {
+      v: 'front', base: 'frontStand', dur: 3.2, hl: ['legs'], thumb: 0.45,
+      common: { a1: { ik: [-13, -2], rel: 'P', b: -1 }, a2: { ik: [13, -2], rel: 'P', b: 1 } },
+      kf: [
+        [0, { p: [120, 102], l1: { ik: [94, 187], b: -1, f: 160 }, l2: { ik: [146, 187], b: 1, f: 20 } }],
+        [0.42, { p: [120, 131], l1: { ik: [94, 187], b: -1, ku: 0.72, f: 160 }, l2: { ik: [146, 187], b: 1, ku: 0.72, f: 20 } }],
+        [0.56, { p: [120, 131], l1: { ik: [94, 187], b: -1, ku: 0.72, f: 160 }, l2: { ik: [146, 187], b: 1, ku: 0.72, f: 20 } }],
+        [1, { p: [120, 102], l1: { ik: [94, 187], b: -1, f: 160 }, l2: { ik: [146, 187], b: 1, f: 20 } }]
+      ]
+    },
+    seit_ausfall: {
+      v: 'front', base: 'frontStand', dur: 4.4, hl: ['legs'], thumb: 0.25,
+      common: { a1: { ik: [-13, -2], rel: 'P', b: -1 }, a2: { ik: [13, -2], rel: 'P', b: 1 } },
+      kf: [
+        [0, { p: [120, 112], t: -90, l1: { ik: [74, 187], b: -1, f: 166 }, l2: { ik: [166, 187], b: 1, f: 14 } }],
+        [0.22, { p: [94, 131], t: -86, l1: { ik: [74, 187], b: -1, ku: 0.8, f: 166 }, l2: { ik: [166, 187], b: 1, f: 14 } }],
+        [0.32, { p: [94, 131], t: -86, l1: { ik: [74, 187], b: -1, ku: 0.8, f: 166 }, l2: { ik: [166, 187], b: 1, f: 14 } }],
+        [0.5, { p: [120, 112], t: -90, l1: { ik: [74, 187], b: -1, f: 166 }, l2: { ik: [166, 187], b: 1, f: 14 } }],
+        [0.72, { p: [146, 131], t: -94, l1: { ik: [74, 187], b: -1, f: 166 }, l2: { ik: [166, 187], b: 1, ku: 0.8, f: 14 } }],
+        [0.82, { p: [146, 131], t: -94, l1: { ik: [74, 187], b: -1, f: 166 }, l2: { ik: [166, 187], b: 1, ku: 0.8, f: 14 } }],
+        [1, { p: [120, 112], t: -90, l1: { ik: [74, 187], b: -1, f: 166 }, l2: { ik: [166, 187], b: 1, f: 14 } }]
+      ]
+    },
+    good_morning: {
+      v: 'side', base: 'sideStand', dur: 3.8, hl: ['torso', 'legs'], thumb: 0.5,
+      kf: [
+        [0, { p: [118, 101], t: -90, h: -88, a1: { u: 74, l: -86, kl: 0.55 }, a2: { u: 78, l: -82, kl: 0.55 } }],
+        [0.42, { p: [104, 106], t: -38, h: -36, a1: { u: 126, l: -34, kl: 0.55 }, a2: { u: 130, l: -30, kl: 0.55 }, l1: { ik: [123, 187], b: 1 }, l2: { ik: [114, 187], b: 1 } }],
+        [0.56, { p: [104, 106], t: -38, h: -36, a1: { u: 126, l: -34, kl: 0.55 }, a2: { u: 130, l: -30, kl: 0.55 }, l1: { ik: [123, 187], b: 1 }, l2: { ik: [114, 187], b: 1 } }],
+        [1, { p: [118, 101], t: -90, h: -88, a1: { u: 74, l: -86, kl: 0.55 }, a2: { u: 78, l: -82, kl: 0.55 } }]
+      ]
+    },
+    standwaage: {
+      v: 'side', base: 'sideStand', dur: 4.4, hl: ['legs', 'torso'], thumb: 0.5,
+      kf: [
+        [0, { p: [118, 101], t: -90, h: -88, a1: [88, 86], a2: [92, 90], l1: { ik: [121, 187] }, l2: { ik: [114, 187] } }],
+        [0.4, { p: [110, 104], t: -16, h: -14, a1: [92, 90], a2: [95, 93], l1: { ik: [117, 187], b: 1 }, l2: { u: 164, l: 164, f: 76 } }],
+        [0.62, { p: [110, 104], t: -16, h: -14, a1: [92, 90], a2: [95, 93], l1: { ik: [117, 187], b: 1 }, l2: { u: 164, l: 164, f: 76 } }],
+        [1, { p: [118, 101], t: -90, h: -88, a1: [88, 86], a2: [92, 90], l1: { ik: [121, 187] }, l2: { ik: [114, 187] } }]
+      ]
+    },
+    kniebeuge_knieheben: {
+      v: 'side', base: 'sideStand', dur: 5.2, hl: ['legs'], thumb: 0.15,
+      kf: [
+        [0, { a1: [84, 80], a2: [88, 84] }],
+        [0.12, m(SQUAT, { h: -70, a1: [-2, -4], a2: [2, 0] })],
+        [0.18, m(SQUAT, { h: -70, a1: [-2, -4], a2: [2, 0] })],
+        [0.3, { a1: [84, 80], a2: [88, 84] }],
+        [0.38, { p: [118, 100], t: -91, l1: [0, 92], a1: [122, 100], a2: [12, -62] }],
+        [0.46, { a1: [84, 80], a2: [88, 84] }],
+        [0.58, m(SQUAT, { h: -70, a1: [-2, -4], a2: [2, 0] })],
+        [0.64, m(SQUAT, { h: -70, a1: [-2, -4], a2: [2, 0] })],
+        [0.76, { a1: [84, 80], a2: [88, 84] }],
+        [0.84, { p: [118, 100], t: -91, l2: [0, 92], a1: [12, -62], a2: [122, 100] }],
+        [0.92, { a1: [84, 80], a2: [88, 84] }],
+        [1, { a1: [84, 80], a2: [88, 84] }]
+      ]
+    },
+    burpee_step: {
+      v: 'side', base: 'sideStand', dur: 6.0, hl: ['legs', 'torso'], thumb: 0.42,
+      kf: [
+        [0, {}],
+        [0.13, { p: [100, 158], t: -22, h: -10, a1: { ik: [160, 189], b: -1 }, a2: { ik: [156, 189], b: -1 } }],
+        [0.25, { p: [106, 155], t: -21, h: -11, a1: { ik: [160, 189], b: -1 }, a2: { ik: [156, 189], b: -1 }, l1: { ik: [121, 187] }, l2: { ik: [36, 186] } }],
+        [0.36, { p: [114, 152], t: -20, h: -12, a1: { ik: [160, 189], b: -1 }, a2: { ik: [156, 189], b: -1 }, l1: { ik: [32, 186] }, l2: { ik: [36, 186] } }],
+        [0.46, { p: [114, 152], t: -20, h: -12, a1: { ik: [160, 189], b: -1 }, a2: { ik: [156, 189], b: -1 }, l1: { ik: [32, 186] }, l2: { ik: [36, 186] } }],
+        [0.57, { p: [106, 155], t: -21, h: -11, a1: { ik: [160, 189], b: -1 }, a2: { ik: [156, 189], b: -1 }, l1: { ik: [121, 187] }, l2: { ik: [36, 186] } }],
+        [0.68, { p: [100, 158], t: -22, h: -10, a1: { ik: [160, 189], b: -1 }, a2: { ik: [156, 189], b: -1 } }],
+        [0.86, {}],
+        [1, {}]
+      ]
+    },
+    ls_eng: {
+      v: 'side', dur: 2.8, hl: ['arms'], thumb: 0.5,
+      common: { a1: { ik: [157, 189], b: -1 }, a2: { ik: [153, 189], b: -1 } },
+      arrows: [{ at: 'a1.J', o: [-8, -4], a: 200, len: 9, win: [0.08, 0.45] }],
+      kf: [[0, KNEE_TOP], [0.45, KNEE_DOWN], [0.55, KNEE_DOWN], [1, KNEE_TOP]]
+    },
+    schwimmer: {
+      v: 'side', base: 'prone', dur: 1.8, hl: ['torso', 'legs'], thumb: 0.25,
+      common: { t: -6, h: -14 },
+      kf: [
+        [0, { a1: [-16, -16], a2: [-4, -4], l1: [181, 181], l2: [193, 193] }],
+        [0.5, { a1: [-4, -4], a2: [-16, -16], l1: [193, 193], l2: [181, 181] }],
+        [1, { a1: [-16, -16], a2: [-4, -4], l1: [181, 181], l2: [193, 193] }]
+      ]
+    },
+    bird_dog: {
+      v: 'side', dur: 6.0, hl: ['torso', 'legs'], thumb: 0.3,
+      common: { p: [105, 144], a2: { ik: [150, 189], b: -1 }, l1: { ik: [62, 187], b: 1, f: 180 } },
+      kf: [
+        [0, { t: -11, h: 4, a1: { ik: [156, 189], b: -1 }, l2: { ik: [67, 187], b: 1, f: 180 } }],
+        [0.16, { t: -11, h: -6, a1: [-6, -6], l2: { u: 169, l: 169, f: 79 } }],
+        [0.46, { t: -11, h: -6, a1: [-6, -6], l2: { u: 169, l: 169, f: 79 } }],
+        [0.62, { t: -6, h: 52, a1: [126, 160], l2: { u: 40, l: 170, f: 200 } }],
+        [0.74, { t: -6, h: 52, a1: [126, 160], l2: { u: 40, l: 170, f: 200 } }],
+        [1, { t: -11, h: 4, a1: { ik: [156, 189], b: -1 }, l2: { ik: [67, 187], b: 1, f: 180 } }]
+      ]
+    },
+    plank_bein: {
+      v: 'side', dur: 4.2, hl: ['torso', 'legs'], thumb: 0.3,
+      common: { p: [112.1, 168.1], t: -12, h: -8, a1: [90, 0], a2: [92, 2] },
+      kf: [
+        [0, { l1: { u: 168, l: 168, f: 78 }, l2: { u: 168, l: 168, f: 78 } }],
+        [0.2, { l1: { u: 179, l: 179, f: 89 }, l2: { u: 168, l: 168, f: 78 } }],
+        [0.36, { l1: { u: 179, l: 179, f: 89 }, l2: { u: 168, l: 168, f: 78 } }],
+        [0.5, { l1: { u: 168, l: 168, f: 78 }, l2: { u: 168, l: 168, f: 78 } }],
+        [0.7, { l1: { u: 168, l: 168, f: 78 }, l2: { u: 179, l: 179, f: 89 } }],
+        [0.86, { l1: { u: 168, l: 168, f: 78 }, l2: { u: 179, l: 179, f: 89 } }],
+        [1, { l1: { u: 168, l: 168, f: 78 }, l2: { u: 168, l: 168, f: 78 } }]
+      ]
+    },
+    nackendehnung_sitz: {
+      v: 'front', base: 'sitFront', dur: 5, hl: ['neck'], hold: true,
+      kf: [[0, { h: -54, se1: -4, a1: [104, 101] }], [0.5, { h: -51, se1: -4.5, a1: [105, 102] }], [1, { h: -54, se1: -4, a1: [104, 101] }]]
     }
   };
 
   /* Varianten mit getauschten Beinen (Seitenwechsel) */
   FM.ANIMS.bridge_single_b = m(FM.ANIMS.bridge_single, { swapLegs: true });
+  FM.ANIMS.standwaage_b = m(FM.ANIMS.standwaage, { swapLegs: true });
+  FM.ANIMS.bird_dog_b = m(FM.ANIMS.bird_dog, { swapLegs: true, swapArms: true });
 })(typeof window !== 'undefined' ? window : globalThis);
 
 /* ---- exercises.js ---- */
 /* =====================================================================
-   Fit-Me · Übungspool
-   cat:    warmup | kreislauf (leise, Power-geeignet) | sprung | kraft | nacken
+   Fit-Me · Übungspool (Version 2)
+   slot:   Platz im Ablauf – W Warm-up · A Kreislauf · B Nacken & Schultern ·
+           C Beinkraft · D Oberkörper & Rücken · E Rumpf · Z Ausklang
+           (ohne slot: nur im Pool, kommt im Plan nicht vor)
    pos:    stehen | sitzen (= im Sitzen oder Stehen) | boden
-   jump:   Sprungübung (nie Power-Intervall, nie zwei hintereinander)
-   power:  geeignet für Power-Intervall („Vollgas“)
+   jump:   Sprungübung (kommt im Plan nicht vor)
+   power:  geeignet für Vollgas-Intervall (Platz A)
    kraeftigend: zählt als kräftigende Nacken-/Schulterübung
    ref:    Code der Übungsreferenz (Fix Your Posture)
-   stufe:  Schwierigkeitsvariante 1 leicht · 2 mittel · 3 schwer · 4 Level 2
-   ph:     erlaubte Phasen (1 = W1–4, 2 = W5–8, 3 = W9–12, 4 = Level 2)
+   stufe:  Schwierigkeit 1 leicht · 2 mittel · 3 schwer · 4 Level 2 (für leichter/schwerer beim Tauschen)
+   ph:     Phasen, in denen der Plan die Übung einsetzt (1 = W1–4, 2 = W5–8, 3 = W9–12, 4 = Level 2)
    side:   Wechsel zur Halbzeit; halbzeit/vorwarnung: eigene Texte dafür
    anim/anim2: Animation erste/zweite Hälfte, mirror2: zweite Hälfte gespiegelt
+   achte / fehler: „Worauf achten“ und „Typische Fehler“
    ===================================================================== */
 (function (g) {
   'use strict';
@@ -1337,70 +1588,344 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     S: { url: 'https://substack.com/@fixyourposture/note/c-246762293', titel: 'Fix Your Posture, Video vom 21.04.2026' }
   };
 
+  FM.SLOT_ORDER = ['W', 'A', 'B', 'C', 'D', 'E', 'Z'];
+  FM.SLOTS = {
+    W: { name: 'Warm-up', zweck: 'Kreislauf und Gelenke vorbereiten' },
+    A: { name: 'Kreislauf', zweck: 'Puls hoch, große Muskeln – ab Woche 5 Vollgas' },
+    B: { name: 'Nacken & Schultern', zweck: 'Nacken, Schultern und Haltung kräftigen' },
+    C: { name: 'Beinkraft', zweck: 'Beine und Po kräftigen' },
+    D: { name: 'Oberkörper & Rücken', zweck: 'Brust, Arme und oberen Rücken kräftigen' },
+    E: { name: 'Rumpf', zweck: 'Bauch, Rücken und Körperspannung' },
+    Z: { name: 'Ausklang', zweck: 'Nacken, Brust und Brustwirbelsäule dehnen' }
+  };
+
   FM.EX = {
-    /* ---------- Warm-up (immer im Stehen) ---------- */
-    marsch: { name: 'Marschieren mit Armschwung', hint: 'Locker auf der Stelle marschieren, Arme schwingen mit – ab Halbzeit Fingerspitzen auf die Schultern und die Ellbogen klein nach hinten kreisen.', cat: 'warmup', pos: 'stehen', stufe: 1, ph: ALL, anim: 'marsch', anim2: 'marsch_kreise', side: true, halbzeit: 'Jetzt Ellbogenkreise', vorwarnung: 'Gleich: Ellbogenkreise' },
-    kreisen: { name: 'Schulter- und Hüftkreisen', hint: 'Fingerspitzen auf die Schultern, Ellbogen groß nach hinten kreisen – ab Halbzeit die Hüfte kreisen.', cat: 'warmup', pos: 'stehen', stufe: 1, ph: ALL, anim: 'kreisen_schulter', anim2: 'kreisen_huefte', side: true, halbzeit: 'Jetzt Hüftkreisen', vorwarnung: 'Gleich: Hüftkreisen' },
-    step_jack: { name: 'Step-Jack', hint: 'Hampelmann ohne Sprung: abwechselnd ein Bein zur Seite tippen, Arme über den Kopf.', cat: 'warmup', pos: 'stehen', stufe: 1, ph: ALL, anim: 'step_jack' },
+    /* ---------- W · Warm-up (immer im Stehen) ---------- */
+    marsch: {
+      name: 'Marschieren mit Armschwung', slot: 'W', cat: 'warmup', pos: 'stehen', stufe: 1, ph: ALL,
+      hint: 'Locker auf der Stelle marschieren, Arme schwingen mit – ab Halbzeit im Wechsel den Gegenarm zum Knie nach oben strecken („Äpfel pflücken“).',
+      anim: 'marsch', anim2: 'marsch_pfluecken', side: true, halbzeit: 'Jetzt Arme nach oben', vorwarnung: 'Gleich: Arme nach oben',
+      achte: ['Aufrecht bleiben, Bauch leicht fest', 'Knie locker anheben, leise aufsetzen', 'Arme nur so hoch, wie es angenehm ist'],
+      fehler: ['Beim Armheben ins Hohlkreuz fallen', 'Schultern zu den Ohren ziehen']
+    },
+    kreisen: {
+      name: 'Schulter- und Hüftkreisen', slot: 'W', cat: 'warmup', pos: 'stehen', stufe: 1, ph: ALL,
+      hint: 'Fingerspitzen auf die Schultern, Ellbogen groß nach hinten kreisen – ab Halbzeit die Hüfte kreisen.',
+      anim: 'kreisen_schulter', anim2: 'kreisen_huefte', side: true, halbzeit: 'Jetzt Hüftkreisen', vorwarnung: 'Gleich: Hüftkreisen',
+      achte: ['Langsam und rund bewegen', 'Nacken lang, Schultern weg von den Ohren', 'Beim Hüftkreisen Knie locker, Oberkörper ruhig'],
+      fehler: ['Hektisch kreisen', 'Ins Hohlkreuz fallen']
+    },
+    step_jack: {
+      name: 'Step-Jack', slot: 'W', cat: 'warmup', pos: 'stehen', stufe: 1, ph: ALL,
+      hint: 'Hampelmann ohne Sprung: abwechselnd ein Bein zur Seite tippen, Arme über den Kopf.',
+      anim: 'step_jack',
+      achte: ['Gewicht bleibt auf dem Standbein', 'Arme nur bis in die angenehme Höhe', 'Gleichmäßig weiteratmen'],
+      fehler: ['Springen statt tippen', 'Schultern hochziehen']
+    },
 
-    /* ---------- Kreislauf leise (Power-geeignet ab Woche 5) ---------- */
-    knieheben: { name: 'Knieheben im Stand', hint: 'Knie im Wechsel bis auf Hüfthöhe ziehen, Gegenarm schwingt mit, leise aufsetzen.', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL, anim: 'knieheben' },
-    kniebeuge_arme: { name: 'Kniebeuge mit Armstrecken', hint: 'Tief in die Kniebeuge, beim Hochkommen die Arme kraftvoll über den Kopf strecken.', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL, anim: 'kniebeuge_arme' },
-    skater_schritt: { name: 'Skater-Schritt', hint: 'Seitlich ausschreiten, hinteres Bein kreuzt diagonal dahinter, Arme schwingen mit – ohne Sprung.', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL, anim: 'skater_schritt' },
-    schattenboxen: { name: 'Schattenboxen', hint: 'Locker in den Knien federn, Fäuste schnell im Wechsel nach vorn, Deckung oben.', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL, anim: 'schattenboxen' },
-    mc_langsam: { name: 'Mountain Climbers (langsam)', hint: 'Im Liegestütz ein Knie langsam zur Brust ziehen, zurück, dann das andere – Hüfte bleibt tief.', cat: 'kreislauf', pos: 'boden', power: true, stufe: 1, ph: [1], anim: 'mc_langsam' },
-    mc_zuegig: { name: 'Mountain Climbers', hint: 'Im Liegestütz die Knie zügig im Wechsel zur Brust ziehen, Hüfte bleibt tief.', cat: 'kreislauf', pos: 'boden', power: true, stufe: 2, ph: [2, 3, 4], anim: 'mc_zuegig' },
-    fersen_po: { name: 'Fersen zum Po', hint: 'Im Gehen auf der Stelle die Fersen im Wechsel Richtung Po führen, Arme schwingen mit.', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL, anim: 'fersen_po' },
+    /* ---------- A · Kreislauf (leise, ohne Sprung, Vollgas-geeignet) ---------- */
+    knieheben: {
+      name: 'Knieheben im Stand', slot: 'A', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL,
+      hint: 'Knie im Wechsel bis auf Hüfthöhe ziehen, Gegenarm schwingt mit, leise aufsetzen.', anim: 'knieheben',
+      achte: ['Aufrecht bleiben, Bauch fest', 'Leise auf dem Vorfuß aufsetzen', 'Arme schwingen gegengleich mit'],
+      fehler: ['Oberkörper lehnt sich nach hinten', 'Knie nur halbherzig anheben']
+    },
+    fersen_po: {
+      name: 'Fersen zum Po', slot: 'A', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL,
+      hint: 'Im Gehen auf der Stelle die Fersen im Wechsel Richtung Po führen, Arme schwingen mit.', anim: 'fersen_po',
+      achte: ['Knie zeigen nach unten', 'Oberkörper bleibt aufrecht', 'Zügig, aber leise'],
+      fehler: ['Oberkörper kippt nach vorn', 'Ins Hohlkreuz fallen']
+    },
+    skater_schritt: {
+      name: 'Skater-Schritt', slot: 'A', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL,
+      hint: 'Seitlich ausschreiten, hinteres Bein kreuzt diagonal dahinter, Arme schwingen mit – ohne Sprung.', anim: 'skater_schritt',
+      achte: ['Knie des Standbeins zeigt Richtung Zehen', 'Hüfte nach hinten, Brust offen', 'Weich abfedern'],
+      fehler: ['Knie knickt nach innen', 'Rundrücken']
+    },
+    kniebeuge_arme: {
+      name: 'Kniebeuge mit Armstrecken', slot: 'A', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL,
+      hint: 'Tief in die Kniebeuge, beim Hochkommen die Arme kraftvoll über den Kopf strecken.', anim: 'kniebeuge_arme',
+      achte: ['Gewicht auf der ganzen Fußsohle', 'Beim Hochkommen ausatmen', 'Arme nur so weit nach oben, wie die Schultern es mögen'],
+      fehler: ['Fersen heben ab', 'Beim Armstrecken ins Hohlkreuz fallen']
+    },
+    schattenboxen: {
+      name: 'Schattenboxen', slot: 'A', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 1, ph: ALL,
+      hint: 'Locker in den Knien federn, Fäuste schnell im Wechsel nach vorn, Deckung oben.', anim: 'schattenboxen',
+      achte: ['Knie locker, Bauch fest', 'Fäuste immer zurück zur Deckung', 'Schultern locker lassen'],
+      fehler: ['Ellbogen beim Schlag ganz durchstrecken', 'Luft anhalten']
+    },
+    kniebeuge_knieheben: {
+      name: 'Kniebeuge mit Knieheben', slot: 'A', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 2, ph: [2, 3, 4],
+      hint: 'Kniebeuge, beim Aufrichten ein Knie bis auf Hüfthöhe heben – Beine im Wechsel.', anim: 'kniebeuge_knieheben',
+      achte: ['Kniebeuge kontrolliert, Knie Richtung Zehen', 'Beim Knieheben aufrecht bleiben', 'Standbein stabil halten'],
+      fehler: ['Schwung statt Kontrolle', 'Knie fallen nach innen']
+    },
+    burpee_step: {
+      name: 'Burpee ohne Sprung', slot: 'A', cat: 'kreislauf', pos: 'stehen', power: true, stufe: 4, ph: [4],
+      hint: 'In die Hocke, Hände aufsetzen, Beine nacheinander zurück in den Stütz, nacheinander wieder vor und aufrichten.', anim: 'burpee_step',
+      achte: ['Hände schulterbreit aufsetzen', 'Im Stütz bildet der Körper eine Linie', 'Schritt für Schritt zurück und wieder vor'],
+      fehler: ['Hüfte hängt im Stütz durch', 'Mit rundem Rücken aufrichten']
+    },
 
-    /* ---------- Kreislauf mit Sprung (nie Power) ---------- */
+    /* ---------- B · Nacken & Schultern (kräftigend, im Stehen) ---------- */
+    s5: {
+      name: 'T-Arme', ref: 'S5', slot: 'B', cat: 'nacken', pos: 'stehen', kraeftigend: true, stufe: 1, ph: ALL,
+      hint: 'Fingerspitzen an die Schläfen, Ellbogen zur Seite – Arme seitlich zum T strecken, Daumen nach hinten, Schulterblätter 2 s zusammenziehen, zurück zu den Schläfen.', anim: 's5',
+      achte: ['Schultern tief, weg von den Ohren', 'Daumen zeigen in der T-Position nach hinten', 'Schulterblätter 2 s fest zusammen'],
+      fehler: ['Hohlkreuz statt Schulterblattarbeit', 'Kopf schiebt sich nach vorn']
+    },
+    ellbogen_oeffner: {
+      name: 'Ellbogen-Öffner', slot: 'B', cat: 'nacken', pos: 'stehen', kraeftigend: true, stufe: 1, ph: ALL,
+      hint: 'Hände locker an den Hinterkopf: Ellbogen weit nach hinten öffnen, Schulterblätter 2 s zusammen, dann vor dem Gesicht zusammenführen – nicht am Kopf ziehen.', anim: 'ellbogen_oeffner',
+      achte: ['Hände nur locker auflegen', 'Kopf bleibt aufrecht über den Schultern', 'Beim Öffnen Schulterblätter zusammenziehen'],
+      fehler: ['Mit den Händen am Kopf ziehen', 'Kinn sinkt beim Schließen zur Brust']
+    },
+    s2: {
+      name: 'Ellbogen-Zug', ref: 'S2', slot: 'B', cat: 'nacken', pos: 'stehen', kraeftigend: true, stufe: 1, ph: ALL,
+      hint: 'Fäuste an den unteren Rücken legen, Ellbogen kräftig nach hinten zueinander ziehen, 2 Sekunden fest halten, kurz lösen.', anim: 's2',
+      achte: ['Brust offen, Schultern tief', 'Ellbogen ziehen nach hinten zueinander', '2 s halten, dann lösen'],
+      fehler: ['Schultern hochziehen', 'Ins Hohlkreuz ausweichen']
+    },
+    ytw: {
+      name: 'Y-T-W-Heben', slot: 'B', cat: 'nacken', pos: 'stehen', kraeftigend: true, stufe: 1, ph: ALL,
+      hint: 'Vorgebeugt, Rücken gerade: Arme als Y, T und W heben, oben jeweils 2 s halten.', anim: 'ytw',
+      achte: ['Rücken gerade, aus der Hüfte vorbeugen', 'Daumen zeigen nach oben', 'Langsam heben, oben 2 s halten'],
+      fehler: ['Rundrücken', 'Schwung aus dem Oberkörper', 'Kopf in den Nacken legen – Blick bleibt zum Boden']
+    },
+    schulterblaetter: {
+      name: 'Schulterblätter zusammenziehen', slot: 'B', cat: 'nacken', pos: 'stehen', kraeftigend: true, stufe: 1, ph: ALL,
+      hint: 'Schulterblätter nach hinten-unten zusammenziehen, 2 s fest halten, lösen.', anim: 'schulterblaetter',
+      achte: ['Nach hinten-unten ziehen', 'Nacken lang lassen', 'Ruhig weiteratmen'],
+      fehler: ['Schultern zu den Ohren ziehen', 'Rippen nach vorn schieben (Hohlkreuz)']
+    },
+    kinn_stand: {
+      name: 'Kinn-Rückzug', slot: 'B', cat: 'nacken', pos: 'stehen', kraeftigend: true, stufe: 1, ph: ALL,
+      hint: 'Aufrecht, Kopf gerade nach hinten schieben (Doppelkinn), 2 s halten, lösen – Blick bleibt geradeaus.', anim: 'kinn_stand',
+      achte: ['Kopf waagerecht nach hinten schieben', 'Blick bleibt geradeaus', 'Sanft, ohne Druck'],
+      fehler: ['Kopf nach unten nicken', 'Mit Kraft drücken']
+    },
+
+    /* ---------- C · Beinkraft (im Stehen) ---------- */
+    kniebeuge: {
+      name: 'Kniebeuge', slot: 'C', cat: 'kraft', pos: 'stehen', stufe: 1, ph: ALL,
+      hint: 'Füße hüftbreit, Gesäß nach hinten-unten, Knie über den Zehen, Rücken gerade.', anim: 'kniebeuge',
+      achte: ['Gewicht auf der ganzen Fußsohle', 'Knie zeigen Richtung Zehen', 'Beim Hochkommen ausatmen'],
+      fehler: ['Knie knicken nach innen', 'Fersen heben ab', 'Rundrücken']
+    },
+    ausfallschritt: {
+      name: 'Ausfallschritt rückwärts', slot: 'C', cat: 'kraft', pos: 'stehen', stufe: 1, ph: ALL,
+      hint: 'Großer Schritt zurück, hinteres Knie sinkt Richtung Boden, Beine im Wechsel.', anim: 'ausfallschritt',
+      achte: ['Vorderes Knie bleibt über dem Sprunggelenk', 'Oberkörper aufrecht', 'Hinteres Knie sanft Richtung Boden'],
+      fehler: ['Vorderes Knie knickt nach innen', 'Zu kurzer Schritt', 'Hinteres Knie knallt auf den Boden']
+    },
+    sumo: {
+      name: 'Grätschkniebeuge', slot: 'C', cat: 'kraft', pos: 'stehen', stufe: 1, ph: ALL,
+      hint: 'Füße weit auseinander, Zehen leicht nach außen, Hände an die Hüften – tief beugen, Knie bleiben über den Sprunggelenken.', anim: 'sumo',
+      achte: ['Zehen leicht nach außen, Knie zeigen in dieselbe Richtung', 'Knie bleiben über den Sprunggelenken', 'Oberkörper aufrecht'],
+      fehler: ['Knie fallen nach innen', 'Oberkörper kippt nach vorn']
+    },
+    good_morning: {
+      name: 'Hüftbeuge (Good Morning)', slot: 'C', cat: 'kraft', pos: 'stehen', stufe: 1, ph: ALL,
+      hint: 'Arme vor der Brust kreuzen, Knie leicht gebeugt: Oberkörper mit geradem Rücken aus der Hüfte nach vorn neigen und wieder aufrichten.', anim: 'good_morning',
+      achte: ['Bewegung kommt aus der Hüfte, Rücken bleibt gerade', 'Knie leicht gebeugt', 'Beim Aufrichten Po anspannen'],
+      fehler: ['Rundrücken', 'Hände hinter dem Kopf – das zieht am Nacken', 'Tiefer gehen, als der gerade Rücken erlaubt']
+    },
+    seit_ausfall: {
+      name: 'Seitlicher Ausfallschritt', slot: 'C', cat: 'kraft', pos: 'stehen', stufe: 2, ph: [2, 3, 4],
+      hint: 'Breiter Stand, Hände an den Hüften: Gesäß nach hinten und das Gewicht auf ein Bein verlagern, dieses Knie beugen, das andere Bein bleibt gestreckt – Seiten im Wechsel.', anim: 'seit_ausfall',
+      achte: ['Gesäß nach hinten wie beim Hinsetzen', 'Gebeugtes Knie zeigt Richtung Zehen', 'Beide Füße bleiben flach am Boden'],
+      fehler: ['Knie schiebt sich weit über die Zehen', 'Rundrücken']
+    },
+    standwaage: {
+      name: 'Standwaage', slot: 'C', cat: 'kraft', pos: 'stehen', side: true, stufe: 2, ph: [2, 3, 4],
+      hint: 'Auf einem Bein stehen, Oberkörper nach vorn neigen und das andere Bein gestreckt nach hinten heben, zurück – zur Halbzeit Seite wechseln.', anim: 'standwaage', anim2: 'standwaage_b',
+      achte: ['Becken bleibt waagerecht', 'Rücken und hinteres Bein bilden eine Linie', 'Bei Bedarf eine Hand an die Wand'],
+      fehler: ['Hüfte dreht sich auf', 'Standbein durchgestreckt', 'Rundrücken']
+    },
+    wandsitzen: {
+      name: 'Wandsitzen', slot: 'C', cat: 'kraft', pos: 'stehen', hold: true, stufe: 2, ph: ALL,
+      hint: 'Rücken an die Wand, Knie im rechten Winkel, Gewicht auf den Fersen – halten.', anim: 'wandsitzen',
+      achte: ['Knie über den Sprunggelenken', 'Rücken flach an der Wand', 'Ruhig weiteratmen'],
+      fehler: ['Hände auf den Oberschenkeln abstützen', 'Luft anhalten']
+    },
+    kniebeuge_halt: {
+      name: 'Kniebeuge mit Halt', slot: 'C', cat: 'kraft', pos: 'stehen', stufe: 4, ph: [4],
+      hint: 'Tief in die Kniebeuge, unten 2 Sekunden halten, dann kraftvoll hoch.', anim: 'kniebeuge_halt',
+      achte: ['Unten 2 s halten, Spannung bleibt', 'Knie zeigen Richtung Zehen', 'Beim Hochkommen ausatmen'],
+      fehler: ['Unten zusammensacken', 'Fersen heben ab']
+    },
+
+    /* ---------- D · Oberkörper & Rücken (Boden) ---------- */
+    superman_row: {
+      name: 'Superman mit Ruderzug', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 1, ph: ALL,
+      hint: 'Bauchlage, Brust und Arme leicht heben, Ellbogen zur Taille ziehen, Schulterblätter 2 s zusammendrücken.', anim: 'superman_row',
+      achte: ['Stirn knapp über dem Boden, Blick nach unten', 'Ellbogen zur Taille ziehen', 'Schulterblätter 2 s zusammen'],
+      fehler: ['Kopf in den Nacken legen', 'Schultern zu den Ohren']
+    },
+    snow_angels: {
+      name: 'Reverse Snow Angels', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 1, ph: ALL,
+      hint: 'Bauchlage, Stirn knapp über dem Boden, gestreckte Arme im großen Bogen von der Hüfte nach vorn führen.', anim: 'snow_angels',
+      achte: ['Arme gestreckt, knapp über dem Boden', 'Schultern weg von den Ohren', 'Langsam führen'],
+      fehler: ['Kopf überstrecken', 'Schwung holen']
+    },
+    schwimmer: {
+      name: 'Schwimmer', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 1, ph: ALL,
+      hint: 'Bauchlage, Arme nach vorn gestreckt: Arme und Beine knapp vom Boden lösen und im Wechsel leicht auf und ab pendeln, Blick zum Boden.', anim: 'schwimmer',
+      achte: ['Kopf in Verlängerung der Wirbelsäule, Blick zum Boden', 'Arme und Beine nur leicht anheben', 'Po und Bauch fest'],
+      fehler: ['Zu hoch heben – das macht ein Hohlkreuz', 'Kopf in den Nacken legen', 'Wippen']
+    },
+    ls_knie: {
+      name: 'Knie-Liegestütz', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 2, ph: [1, 2],
+      hint: 'Auf den Knien, Hände unter den Schultern, Körper gerade, Brust Richtung Boden senken.', anim: 'ls_knie',
+      achte: ['Hände unter den Schultern', 'Knie bis Kopf eine gerade Linie', 'Ellbogen etwa 45° vom Körper'],
+      fehler: ['Hüfte knickt ein', 'Ellbogen weit abgespreizt', 'Kopf hängen lassen']
+    },
+    plus_knie: {
+      name: 'Knie-Liegestütz mit Schulterblatt-Push', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 2, ph: [2],
+      hint: 'Knie-Liegestütz, oben zusätzlich die Schulterblätter auseinanderschieben und 2 s halten.', anim: 'plus_knie',
+      achte: ['Körper bleibt gerade', 'Oben die Schulterblätter auseinanderschieben', 'Arme beim Push gestreckt lassen'],
+      fehler: ['Hüfte hängt durch', 'Schultern zu den Ohren']
+    },
+    ls_eng: {
+      name: 'Enger Knie-Liegestütz', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 2, ph: [2, 3, 4],
+      hint: 'Auf den Knien, Hände enger als schulterbreit, Ellbogen streifen beim Absenken eng am Körper nach hinten.', anim: 'ls_eng',
+      achte: ['Hände enger als schulterbreit', 'Ellbogen eng am Körper nach hinten', 'Körper bleibt gerade'],
+      fehler: ['Ellbogen gehen nach außen', 'Hüfte hängt durch']
+    },
+    ls_voll: {
+      name: 'Liegestütz', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 3, ph: [3, 4],
+      hint: 'Hände unter den Schultern, Körper bildet eine Linie, Brust bis knapp über den Boden.', anim: 'ls_voll',
+      achte: ['Fersen bis Kopf eine Linie', 'Bauch und Po fest', 'Ellbogen etwa 45° vom Körper'],
+      fehler: ['Hüfte hängt durch (Hohlkreuz)', 'Po zu hoch', 'Arme oben ganz durchstrecken']
+    },
+    plus_voll: {
+      name: 'Plus-Push-up', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 3, ph: [3, 4],
+      hint: 'Voller Liegestütz, oben die Schulterblätter aktiv auseinanderschieben und 2 s halten.', anim: 'plus_voll',
+      achte: ['Körper bildet eine Linie', 'Oben die Schulterblätter auseinanderschieben', 'Gleichmäßig atmen'],
+      fehler: ['Hüfte hängt durch', 'Schultern zu den Ohren']
+    },
+    ls_langsam: {
+      name: 'Liegestütz langsam', slot: 'D', cat: 'kraft', pos: 'boden', stufe: 4, ph: [4],
+      hint: 'Voller Liegestütz: 3 Sekunden absenken, zügig hochdrücken.', anim: 'ls_langsam',
+      achte: ['3 s absenken, Spannung halten', 'Körper bleibt eine Linie', 'Zügig hochdrücken, dabei ausatmen'],
+      fehler: ['Absacken statt kontrolliert senken', 'Luft anhalten']
+    },
+
+    /* ---------- E · Rumpf (Boden) ---------- */
+    plank_knie: {
+      name: 'Unterarmstütz auf Knien', slot: 'E', cat: 'kraft', pos: 'boden', hold: true, stufe: 1, ph: [1],
+      hint: 'Ellbogen unter den Schultern, Knie am Boden, Bauch fest, Körper gerade – halten.', anim: 'plank_knie',
+      achte: ['Ellbogen unter den Schultern', 'Knie bis Kopf eine Linie', 'Bauch fest, gleichmäßig atmen'],
+      fehler: ['Po zu hoch', 'Hohlkreuz', 'Kopf hängen lassen']
+    },
+    plank: {
+      name: 'Unterarmstütz', slot: 'E', cat: 'kraft', pos: 'boden', hold: true, stufe: 2, ph: [2, 3, 4],
+      hint: 'Ellbogen unter den Schultern, Körper bildet eine Linie, Bauch und Po fest – halten.', anim: 'plank',
+      achte: ['Ellbogen unter den Schultern', 'Fersen bis Kopf eine Linie', 'Bauch und Po fest'],
+      fehler: ['Ins Hohlkreuz fallen', 'Hüfte zu hoch', 'Luft anhalten']
+    },
+    plank_bein: {
+      name: 'Unterarmstütz mit Beinheben', slot: 'E', cat: 'kraft', pos: 'boden', stufe: 3, ph: [3, 4],
+      hint: 'Im Unterarmstütz abwechselnd ein gestrecktes Bein leicht anheben – das Becken bleibt ruhig.', anim: 'plank_bein',
+      achte: ['Becken bleibt ruhig und waagerecht', 'Bein nur leicht anheben', 'Bauch fest'],
+      fehler: ['Becken wackelt oder dreht sich', 'Beim Beinheben ins Hohlkreuz fallen']
+    },
+    seitstuetz_knie: {
+      name: 'Seitstütz auf Knien', slot: 'E', cat: 'kraft', pos: 'boden', hold: true, side: true, stufe: 1, ph: [1, 2],
+      hint: 'Auf Unterarm und Knien, Becken heben, Körper gerade – zur Halbzeit Seite wechseln.', anim: 'seitstuetz_knie', anim2: 'seitstuetz_knie', mirror2: true,
+      achte: ['Ellbogen unter der Schulter', 'Becken hoch, Körper gerade', 'Kopf in Verlängerung der Wirbelsäule'],
+      fehler: ['Becken sinkt ab', 'Oberkörper kippt nach vorn', 'Schulter rutscht zum Ohr']
+    },
+    seitstuetz: {
+      name: 'Seitstütz', slot: 'E', cat: 'kraft', pos: 'boden', hold: true, side: true, stufe: 3, ph: [3, 4],
+      hint: 'Auf den Unterarm stützen, Becken heben, Körper bildet eine Linie – zur Halbzeit Seite wechseln.', anim: 'seitstuetz', anim2: 'seitstuetz', mirror2: true,
+      achte: ['Ellbogen unter der Schulter', 'Füße bis Kopf eine Linie', 'Kopf in Verlängerung der Wirbelsäule'],
+      fehler: ['Becken sinkt ab', 'Oberkörper kippt nach vorn', 'Schulter rutscht zum Ohr']
+    },
+    dead_bug: {
+      name: 'Dead Bug (Käfer)', slot: 'E', cat: 'kraft', pos: 'boden', stufe: 1, ph: ALL,
+      hint: 'Rückenlage, unteren Rücken fest in den Boden drücken, Arme und Beine im Wechsel diagonal lang ausstrecken.', anim: 'dead_bug',
+      achte: ['Unterer Rücken bleibt am Boden', 'Langsam strecken', 'Beim Strecken ausatmen'],
+      fehler: ['Hohlkreuz', 'Zu schnell', 'Kopf vom Boden heben']
+    },
+    bird_dog: {
+      name: 'Bird Dog', slot: 'E', cat: 'kraft', pos: 'boden', side: true, stufe: 1, ph: ALL,
+      hint: 'Vierfüßler: einen Arm und das gegenüberliegende Bein lang ausstrecken, 2 s halten, dann Ellbogen und Knie unter dem Bauch zusammenführen – zur Halbzeit Seite wechseln.', anim: 'bird_dog', anim2: 'bird_dog_b',
+      achte: ['Rücken bleibt flach, Becken waagerecht', 'Arm und Bein nur bis zur Linie mit dem Rücken', 'Blick zum Boden'],
+      fehler: ['Hohlkreuz', 'Becken dreht sich auf', 'Kopf in den Nacken legen']
+    },
+    bridge: {
+      name: 'Beckenheben', slot: 'E', cat: 'kraft', pos: 'boden', stufe: 1, ph: ALL,
+      hint: 'Rückenlage, Füße aufgestellt: Becken bis zur Linie Knie–Schulter heben, oben 2 s halten.', anim: 'bridge',
+      achte: ['Fersen etwa unter den Knien', 'Po anspannen, Becken bis zur Linie Knie–Schulter', 'Oben 2 s halten'],
+      fehler: ['Zu hoch drücken – das macht ein Hohlkreuz', 'Knie fallen auseinander']
+    },
+    bridge_single: {
+      name: 'Einbeiniges Beckenheben', slot: 'E', cat: 'kraft', pos: 'boden', side: true, stufe: 3, ph: [3, 4],
+      hint: 'Ein Bein gestreckt, Becken über das Standbein heben, oben 2 s halten – zur Halbzeit Seite wechseln.', anim: 'bridge_single', anim2: 'bridge_single_b',
+      achte: ['Becken bleibt waagerecht', 'Kraft aus der Ferse des Standbeins', 'Po fest'],
+      fehler: ['Becken kippt zur Seite', 'Hohlkreuz']
+    },
+    mc_langsam: {
+      name: 'Bergsteiger langsam', slot: 'E', cat: 'kraft', pos: 'boden', stufe: 2, ph: [2, 3, 4],
+      hint: 'Im Liegestütz ein Knie langsam zur Brust ziehen, zurück, dann das andere – Hüfte bleibt tief.', anim: 'mc_langsam',
+      achte: ['Hände unter den Schultern', 'Hüfte tief, Rücken gerade', 'Knie kontrolliert zur Brust'],
+      fehler: ['Po streckt sich nach oben', 'Schultern weit vor die Hände schieben']
+    },
+    mc_zuegig: {
+      name: 'Bergsteiger zügig', slot: 'E', cat: 'kraft', pos: 'boden', stufe: 3, ph: [3, 4],
+      hint: 'Im Liegestütz die Knie zügig im Wechsel zur Brust ziehen, Hüfte bleibt tief.', anim: 'mc_zuegig',
+      achte: ['Hüfte tief', 'Hände unter den Schultern', 'Gleichmäßig atmen'],
+      fehler: ['Po streckt sich nach oben', 'Hüfte wippt auf und ab']
+    },
+
+    /* ---------- Z · Ausklang (Boden oder Sitz) ---------- */
+    nackendehnung: {
+      name: 'Seitliche Nackendehnung', slot: 'Z', cat: 'nacken', pos: 'sitzen', hold: true, side: true, stufe: 1, ph: ALL,
+      hint: 'Im Fersen- oder Schneidersitz: Ohr Richtung Schulter sinken lassen, Gegenschulter tief halten – zur Halbzeit Seite wechseln.', anim: 'nackendehnung_sitz', anim2: 'nackendehnung_sitz', mirror2: true,
+      achte: ['Gegenschulter aktiv tief halten', 'Sanft dehnen, nicht ziehen', 'Ruhig und tief atmen'],
+      fehler: ['Mit der Hand am Kopf ziehen', 'Schulter mit hochziehen']
+    },
+    r3: {
+      name: 'Nadelöhr', ref: 'R3', slot: 'Z', cat: 'nacken', pos: 'boden', side: true, stufe: 1, ph: ALL,
+      hint: 'Im Vierfüßler einen Arm unter dem Körper zur Gegenseite durchschieben, Schulter und Schläfe ablegen, tief atmen, nach Halbzeit Seite wechseln.', anim: 'r3', anim2: 'r3', mirror2: true,
+      achte: ['Hüfte bleibt über den Knien', 'Schulter und Schläfe sanft ablegen', 'Tief atmen'],
+      fehler: ['Gewicht auf den Kopf legen', 'Hüfte schiebt zur Seite']
+    },
+    r2: {
+      name: 'Kniender Brustöffner', ref: 'R2', slot: 'Z', cat: 'nacken', pos: 'boden', stufe: 1, ph: ALL,
+      hint: 'Aus dem Vierfüßler Hände weit seitlich aufsetzen, Gesäß bleibt über den Knien, Brust und Stirn Richtung Boden sinken lassen; kein Gewicht auf den Kopf.', anim: 'r2',
+      achte: ['Gesäß bleibt über den Knien', 'Brust sinkt sanft Richtung Boden', 'Kein Gewicht auf den Kopf'],
+      fehler: ['Ein Hohlkreuz erzwingen', 'Bei Schulterschmerz weiterdehnen']
+    },
+    r1: {
+      name: 'Vierfüßler-Rotation', ref: 'R1', slot: 'Z', cat: 'nacken', pos: 'boden', side: true, stufe: 1, ph: ALL,
+      hint: 'Im Vierfüßler eine Hand an den Hinterkopf, Ellbogen unter dem Körper absenken, dann weit zur Decke aufdrehen; Blick folgt dem Ellbogen, Seite wechseln.', anim: 'r1', anim2: 'r1', mirror2: true,
+      achte: ['Drehung kommt aus der Brustwirbelsäule', 'Blick folgt dem Ellbogen', 'Hüfte bleibt ruhig'],
+      fehler: ['Aus der Hüfte mitdrehen', 'Mit Schwung arbeiten']
+    },
+    kobra: {
+      name: 'Kobra', slot: 'Z', cat: 'nacken', pos: 'boden', stufe: 1, ph: ALL,
+      hint: 'Bauchlage, Hände neben der Brust, Brustbein sanft heben, Nacken lang, Blick zum Boden.', anim: 'kobra',
+      achte: ['Becken bleibt am Boden', 'Nacken lang, Blick zum Boden', 'Nur so weit hoch, wie es angenehm ist'],
+      fehler: ['Kopf in den Nacken legen', 'Schultern zu den Ohren', 'Zu hoch drücken (Hohlkreuz)']
+    },
+
+    /* ---------- Nur im Pool (kein Platz im Plan) ---------- */
     hampelmann: { name: 'Hampelmann', hint: 'Beine grätschen, Arme über den Kopf – weich und leise auf den Fußballen landen.', cat: 'sprung', pos: 'stehen', jump: true, stufe: 1, ph: ALL, anim: 'hampelmann' },
     skater_sprung: { name: 'Skater-Sprünge', hint: 'Seitlich von Bein zu Bein springen, Standbein federt, weich und leise landen.', cat: 'sprung', pos: 'stehen', jump: true, stufe: 2, ph: [2, 3, 4], anim: 'skater_sprung' },
     squat_jump: { name: 'Squat Jumps', hint: 'Aus der Kniebeuge explosiv hochspringen und weich zurück in die Kniebeuge landen.', cat: 'sprung', pos: 'stehen', jump: true, stufe: 3, ph: [3, 4], anim: 'squat_jump' },
-    burpee: { name: 'Burpee ohne Liegestütz', hint: 'In die Hocke, Füße zurück in den Stütz, zurück in die Hocke, aufrichten mit kleinem Sprung.', cat: 'sprung', pos: 'stehen', jump: true, stufe: 4, ph: [4], anim: 'burpee' },
-
-    /* ---------- Kraft ---------- */
-    kniebeuge: { name: 'Kniebeuge', hint: 'Füße hüftbreit, Gesäß nach hinten-unten, Knie über den Zehen, Rücken gerade.', cat: 'kraft', pos: 'stehen', muster: 'beine', stufe: 1, ph: ALL, anim: 'kniebeuge' },
-    kniebeuge_halt: { name: 'Kniebeuge mit Halt', hint: 'Tief in die Kniebeuge, unten 2 Sekunden halten, dann kraftvoll hoch.', cat: 'kraft', pos: 'stehen', muster: 'beine', stufe: 4, ph: [4], anim: 'kniebeuge_halt' },
-    ausfallschritt: { name: 'Ausfallschritt rückwärts', hint: 'Großer Schritt zurück, hinteres Knie sinkt Richtung Boden, Beine im Wechsel.', cat: 'kraft', pos: 'stehen', muster: 'beine', stufe: 1, ph: ALL, anim: 'ausfallschritt' },
-    wandsitzen: { name: 'Wandsitzen', hint: 'Rücken an die Wand, Knie im rechten Winkel, Gewicht auf den Fersen – halten.', cat: 'kraft', pos: 'stehen', muster: 'beine', hold: true, stufe: 2, ph: ALL, anim: 'wandsitzen' },
-    ls_wand: { name: 'Wand-Liegestütz', hint: 'Hände schulterhoch an die Wand, Körper gerade, Brust zur Wand senken und wegdrücken.', cat: 'kraft', pos: 'stehen', muster: 'druck', stufe: 1, ph: [1], anim: 'ls_wand' },
-    plus_wand: { name: 'Wand-Liegestütz mit Schulterblatt-Push', hint: 'Wie Wand-Liegestütz, oben zusätzlich die Schulterblätter auseinanderschieben und 2 s halten.', cat: 'kraft', pos: 'stehen', muster: 'druck', stufe: 1, ph: [1], anim: 'plus_wand' },
-    ls_knie: { name: 'Knie-Liegestütz', hint: 'Auf den Knien, Hände unter den Schultern, Körper gerade, Brust Richtung Boden senken.', cat: 'kraft', pos: 'boden', muster: 'druck', stufe: 2, ph: [2], anim: 'ls_knie' },
-    plus_knie: { name: 'Knie-Liegestütz mit Schulterblatt-Push', hint: 'Knie-Liegestütz, oben zusätzlich die Schulterblätter auseinanderschieben und 2 s halten.', cat: 'kraft', pos: 'boden', muster: 'druck', stufe: 2, ph: [2], anim: 'plus_knie' },
-    ls_voll: { name: 'Liegestütz', hint: 'Hände unter den Schultern, Körper bildet eine Linie, Brust bis knapp über den Boden.', cat: 'kraft', pos: 'boden', muster: 'druck', stufe: 3, ph: [3, 4], anim: 'ls_voll' },
-    plus_voll: { name: 'Plus-Push-up', hint: 'Voller Liegestütz, oben die Schulterblätter aktiv auseinanderschieben und 2 s halten.', cat: 'kraft', pos: 'boden', muster: 'druck', stufe: 3, ph: [3, 4], anim: 'plus_voll' },
-    ls_langsam: { name: 'Liegestütz langsam', hint: 'Voller Liegestütz: 3 Sekunden absenken, zügig hochdrücken.', cat: 'kraft', pos: 'boden', muster: 'druck', stufe: 4, ph: [4], anim: 'ls_langsam' },
-    plank_knie: { name: 'Unterarmstütz auf Knien', hint: 'Ellbogen unter den Schultern, Knie am Boden, Bauch fest, Körper gerade – halten.', cat: 'kraft', pos: 'boden', muster: 'rumpf', hold: true, stufe: 1, ph: [1], anim: 'plank_knie' },
-    plank: { name: 'Unterarmstütz', hint: 'Ellbogen unter den Schultern, Körper bildet eine Linie, Bauch und Po fest – halten.', cat: 'kraft', pos: 'boden', muster: 'rumpf', hold: true, stufe: 2, ph: [2, 3, 4], anim: 'plank' },
-    bridge: { name: 'Beckenheben', hint: 'Rückenlage, Füße aufgestellt: Becken bis zur Linie Knie–Schulter heben, oben 2 s halten.', cat: 'kraft', pos: 'boden', muster: 'becken', stufe: 1, ph: [1, 2], anim: 'bridge' },
-    bridge_single: { name: 'Einbeiniges Beckenheben', hint: 'Ein Bein gestreckt, Becken über das Standbein heben, oben 2 s halten – zur Halbzeit Seite wechseln.', cat: 'kraft', pos: 'boden', muster: 'becken', side: true, stufe: 3, ph: [3, 4], anim: 'bridge_single', anim2: 'bridge_single_b' },
-    superman_row: { name: 'Superman mit Ruderzug', hint: 'Bauchlage, Brust und Arme leicht heben, Ellbogen zur Taille ziehen, Schulterblätter 2 s zusammendrücken.', cat: 'kraft', pos: 'boden', muster: 'zug', stufe: 1, ph: ALL, anim: 'superman_row' },
-    snow_angels: { name: 'Reverse Snow Angels', hint: 'Bauchlage, Stirn knapp über dem Boden, gestreckte Arme im großen Bogen von der Hüfte nach vorn führen.', cat: 'kraft', pos: 'boden', muster: 'zug', stufe: 1, ph: ALL, anim: 'snow_angels' },
-    seitstuetz_knie: { name: 'Seitstütz auf Knien', hint: 'Auf Unterarm und Knien, Becken heben, Körper gerade – zur Halbzeit Seite wechseln.', cat: 'kraft', pos: 'boden', muster: 'rumpf', hold: true, side: true, stufe: 1, ph: [1, 2], anim: 'seitstuetz_knie', anim2: 'seitstuetz_knie', mirror2: true },
-    seitstuetz: { name: 'Seitstütz', hint: 'Auf den Unterarm stützen, Becken heben, Körper bildet eine Linie – zur Halbzeit Seite wechseln.', cat: 'kraft', pos: 'boden', muster: 'rumpf', hold: true, side: true, stufe: 3, ph: [3, 4], anim: 'seitstuetz', anim2: 'seitstuetz', mirror2: true },
-    dead_bug: { name: 'Dead Bug (Käfer)', hint: 'Rückenlage, unteren Rücken fest in den Boden drücken, Arme und Beine im Wechsel diagonal lang ausstrecken.', cat: 'kraft', pos: 'boden', muster: 'rumpf', stufe: 1, ph: ALL, anim: 'dead_bug' },
-
-    /* ---------- Nacken, Schulter, Haltung ---------- */
-    kinn_stand: { name: 'Kinn-Rückzug', hint: 'Aufrecht, Kopf gerade nach hinten schieben (Doppelkinn), 2 s halten, lösen – Blick bleibt geradeaus.', cat: 'nacken', pos: 'sitzen', kraeftigend: true, stufe: 1, ph: ALL, anim: 'kinn_stand' },
+    burpee: { name: 'Burpee', hint: 'In die Hocke, Füße zurück in den Stütz, zurück in die Hocke, aufrichten mit kleinem Sprung.', cat: 'sprung', pos: 'stehen', jump: true, stufe: 4, ph: [4], anim: 'burpee' },
+    ls_wand: { name: 'Wand-Liegestütz', hint: 'Hände schulterhoch an die Wand, Körper gerade, Brust zur Wand senken und wegdrücken.', cat: 'kraft', pos: 'stehen', stufe: 1, ph: [1], anim: 'ls_wand' },
+    plus_wand: { name: 'Wand-Liegestütz mit Schulterblatt-Push', hint: 'Wie Wand-Liegestütz, oben zusätzlich die Schulterblätter auseinanderschieben und 2 s halten.', cat: 'kraft', pos: 'stehen', stufe: 1, ph: [1], anim: 'plus_wand' },
     kinn_vf: { name: 'Kinn-Rückzug im Vierfüßler', hint: 'Kopf in Verlängerung der Wirbelsäule, Kinn gegen die Schwerkraft zurückziehen, 2 s halten.', cat: 'nacken', pos: 'boden', kraeftigend: true, stufe: 2, ph: [2], anim: 'kinn_vf' },
     kinn_rl: { name: 'Kinn-Rückzug in Rückenlage', hint: 'Kinn einziehen und den Kopf 1 cm anheben, 2 s halten, sanft ablegen.', cat: 'nacken', pos: 'boden', kraeftigend: true, stufe: 3, ph: [3, 4], anim: 'kinn_rl' },
-    schulterblaetter: { name: 'Schulterblätter zusammenziehen', hint: 'Schulterblätter nach hinten-unten zusammenziehen, 2 s fest halten, lösen.', cat: 'nacken', pos: 'sitzen', kraeftigend: true, stufe: 1, ph: ALL, anim: 'schulterblaetter' },
     wandengel: { name: 'Wandengel', hint: 'Rücken, Hinterkopf und Arme an der Wand, Arme langsam hoch- und runterschieben.', cat: 'nacken', pos: 'stehen', stufe: 1, ph: ALL, anim: 'wandengel' },
-    ytw: { name: 'Y-T-W-Heben', hint: 'Vorgebeugt, Rücken gerade: Arme als Y, T und W heben, oben jeweils 2 s halten.', cat: 'nacken', pos: 'stehen', kraeftigend: true, stufe: 1, ph: ALL, anim: 'ytw' },
     schulterkreisen: { name: 'Schulterkreisen rückwärts', hint: 'Fingerspitzen auf die Schultern, Ellbogen langsam und groß nach hinten kreisen, Nacken lang.', cat: 'nacken', pos: 'sitzen', stufe: 1, ph: ALL, anim: 'kreisen_schulter' },
-    nackendehnung: { name: 'Seitliche Nackendehnung', hint: 'Ohr Richtung Schulter sinken lassen, Gegenschulter tief halten – zur Halbzeit Seite wechseln.', cat: 'nacken', pos: 'sitzen', hold: true, side: true, stufe: 1, ph: ALL, anim: 'nackendehnung', anim2: 'nackendehnung', mirror2: true },
     tuerrahmen: { name: 'Brustöffner im Türrahmen', hint: 'Unterarme an den Türrahmen, einen Schritt vor, Brust sanft öffnen und halten.', cat: 'nacken', pos: 'stehen', hold: true, stufe: 1, ph: ALL, anim: 'tuerrahmen' },
-    kobra: { name: 'Kobra', hint: 'Bauchlage, Hände neben der Brust, Brustbein sanft heben, Nacken lang, Blick zum Boden.', cat: 'nacken', pos: 'boden', stufe: 1, ph: ALL, anim: 'kobra' },
-
-    /* ---------- Übungsreferenzen (Fix Your Posture) ---------- */
-    r1: { name: 'Vierfüßler-Rotation', ref: 'R1', hint: 'Im Vierfüßler eine Hand an den Hinterkopf, Ellbogen unter dem Körper absenken, dann weit zur Decke aufdrehen; Blick folgt dem Ellbogen, Seite wechseln', cat: 'nacken', pos: 'boden', side: true, stufe: 1, ph: ALL, anim: 'r1', anim2: 'r1', mirror2: true },
-    r2: { name: 'Kniender Brustöffner', ref: 'R2', hint: 'Aus dem Vierfüßler Hände weit seitlich aufsetzen, Gesäß bleibt über den Knien, Brust und Stirn Richtung Boden sinken lassen; kein Gewicht auf den Kopf', cat: 'nacken', pos: 'boden', stufe: 1, ph: ALL, anim: 'r2' },
-    r3: { name: 'Nadelöhr', ref: 'R3', hint: 'Im Vierfüßler einen Arm unter dem Körper zur Gegenseite durchschieben, Schulter und Schläfe ablegen, tief atmen, nach Halbzeit Seite wechseln', cat: 'nacken', pos: 'boden', side: true, stufe: 1, ph: ALL, anim: 'r3', anim2: 'r3', mirror2: true },
     s1: { name: 'Brustöffner, Hände hinten', ref: 'S1', hint: 'Aufrecht sitzen oder stehen, Hände hinter dem Rücken verschränken, Arme strecken, Schultern aktiv nach hinten-unten ziehen und halten', cat: 'nacken', pos: 'sitzen', hold: true, stufe: 1, ph: ALL, anim: 's1' },
-    s2: { name: 'Ellbogen-Zug', ref: 'S2', hint: 'Fäuste an den unteren Rücken legen, Ellbogen kräftig nach hinten zueinander ziehen, 2 Sekunden fest halten, kurz lösen', cat: 'nacken', pos: 'sitzen', kraeftigend: true, stufe: 1, ph: ALL, anim: 's2' },
     s3: { name: 'Arm-Öffner', ref: 'S3', hint: 'Arme locker seitlich weit nach hinten schwingen, Brust aktiv öffnen, kontrolliert zurück nach vorn führen', cat: 'nacken', pos: 'sitzen', stufe: 1, ph: ALL, anim: 's3' },
-    s4: { name: 'Schulter-Reach über Kreuz', ref: 'S4', hint: 'Eine Hand von oben hinter den Nacken, die andere von unten an den Rücken, Hände Richtung Schulterblätter schieben, nach Halbzeit Seite wechseln', cat: 'nacken', pos: 'sitzen', hold: true, side: true, stufe: 1, ph: ALL, anim: 's4', anim2: 's4', mirror2: true },
-    s5: { name: 'T-Arme', ref: 'S5', hint: 'Arme seitlich auf Schulterhöhe strecken, Daumen nach hinten, Schulterblätter fest zusammenziehen und Arme in kleinen Impulsen nach hinten führen – bei Bedarf alle 15–20 s die Arme kurz für 1–2 s lockern', cat: 'nacken', pos: 'sitzen', kraeftigend: true, stufe: 1, ph: ALL, anim: 's5' }
+    s4: { name: 'Schulter-Reach über Kreuz', ref: 'S4', hint: 'Eine Hand von oben hinter den Nacken, die andere von unten an den Rücken, Hände Richtung Schulterblätter schieben, nach Halbzeit Seite wechseln', cat: 'nacken', pos: 'sitzen', hold: true, side: true, stufe: 1, ph: ALL, anim: 's4', anim2: 's4', mirror2: true }
   };
 
   FM.POS_LABEL = { stehen: 'Stehen', sitzen: 'Sitzen oder Stehen', boden: 'Boden' };
@@ -1409,87 +1934,81 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
 
 /* ---- routines.js ---- */
 /* =====================================================================
-   Fit-Me · Wochenroutinen Level 1 und Level 2 (Blocksystem ab Version 1.1)
-   Pro Woche 4 Kernübungen, je 2 Runden:
-     Warm-up (60 s, Stehen) → Übergang → A B A B (Stehen) → C D C D (Boden)
-   A = Beine/Kreislauf · B = Nacken/Schulter/Haltung (kräftigend)
-   C = Liegestütz, oberer Rücken oder Mobilität · D = Rumpfspannung
-   Ein „!“ hinter A markiert Power-Intervalle („Vollgas“) in beiden Runden.
+   Fit-Me · 24 Wochenroutinen (Level 1 und Level 2, je 12 Wochen) – Version 2
+   Ablauf je Einheit: Warm-up → im Stehen A B C, 2 Runden im Wechsel →
+   am Boden D E, 2 Runden im Wechsel → Ausklang Z.
+   Eine Zeile je Woche: „A B C D E Z“ – „!“ markiert das Vollgas-Intervall auf A.
+   Das Warm-up wechselt wöchentlich: Marschieren, Kreisen, Step-Jack.
    ===================================================================== */
 (function (g) {
   'use strict';
   var FM = g.FM = g.FM || {};
   var WARM = ['marsch', 'kreisen', 'step_jack'];
+  var PLAETZE = ['A', 'B', 'C', 'D', 'E', 'Z'];
 
   function plan(list) {
     return list.map(function (zeile, i) {
-      return {
-        warm: WARM[i % 3],
-        items: zeile.split(/\s+/).map(function (s) {
-          return { id: s.replace('!', ''), power: s.indexOf('!') > -1 };
-        })
-      };
+      var teile = zeile.split(/\s+/), slots = { W: WARM[i % 3] };
+      PLAETZE.forEach(function (k, j) { slots[k] = teile[j].replace('!', ''); });
+      return { slots: slots, power: teile[0].indexOf('!') > -1 };
     });
   }
 
   FM.PROGRAM = {
     1: plan([
-      /* Phase 1 · 40 s / 30 s · leichteste Varianten, keine Power-Intervalle */
-      'kniebeuge s5 r3 plank_knie',
-      'ausfallschritt s2 superman_row dead_bug',
-      'knieheben kinn_stand r1 plank_knie',
-      'kniebeuge_arme ytw r2 seitstuetz_knie',
-      /* Phase 2 · 50 s / 20 s · mittlere Varianten, A als Power-Intervall */
-      'knieheben! s2 ls_knie plank',
-      'kniebeuge_arme! schulterblaetter r3 seitstuetz_knie',
-      'skater_schritt! s5 plus_knie dead_bug',
-      'fersen_po! ytw r1 plank',
-      /* Phase 3 · 55 s / 15 s · schwere Varianten */
-      'kniebeuge_arme! s5 ls_voll seitstuetz',
-      'knieheben! kinn_stand r2 plank',
-      'skater_schritt! schulterblaetter r3 dead_bug',
-      'fersen_po! s2 plus_voll plank'
+      // Woche 1–4: 35 s / 20 s, ohne Vollgas
+      'knieheben s5 kniebeuge superman_row plank_knie nackendehnung',
+      'fersen_po ellbogen_oeffner sumo schwimmer dead_bug r3',
+      'skater_schritt s2 ausfallschritt ls_knie seitstuetz_knie kobra',
+      'kniebeuge_arme ytw good_morning snow_angels bird_dog r2',
+      // Woche 5–8: 40 s / 15 s, Vollgas auf A
+      'knieheben! schulterblaetter kniebeuge ls_knie plank r1',
+      'skater_schritt! s5 seit_ausfall superman_row bridge nackendehnung',
+      'kniebeuge_knieheben! kinn_stand ausfallschritt ls_eng seitstuetz_knie r3',
+      'fersen_po! ellbogen_oeffner standwaage plus_knie plank r2',
+      // Woche 9–12: 45 s / 10 s, Vollgas auf A
+      'kniebeuge_arme! s2 sumo ls_voll seitstuetz kobra',
+      'skater_schritt! ytw wandsitzen schwimmer plank_bein r1',
+      'kniebeuge_knieheben! s5 seit_ausfall plus_voll bridge_single nackendehnung',
+      'knieheben! ellbogen_oeffner ausfallschritt ls_voll plank r3'
     ]),
     2: plan([
-      /* Stufe 1 (W1–4) · volle Liegestütz-Varianten */
-      'skater_schritt! s2 ls_voll plank',
-      'kniebeuge_arme! ytw r1 seitstuetz',
-      'knieheben! s5 superman_row dead_bug',
-      'fersen_po! schulterblaetter r2 plank',
-      /* Stufe 2 (W5–8) · Tempo-Variante: langsames Absenken */
-      'kniebeuge_arme! s2 ls_langsam seitstuetz',
-      'skater_schritt! kinn_stand r3 plank',
-      'knieheben! s5 plus_voll dead_bug',
-      'fersen_po! ytw r1 plank',
-      /* Stufe 3 (W9–12) */
-      'kniebeuge_arme! s2 ls_langsam seitstuetz',
-      'skater_schritt! schulterblaetter r2 plank',
-      'knieheben! s5 snow_angels dead_bug',
-      'fersen_po! s2 plus_voll plank'
+      // Level 2: 45 s / 10 s, Vollgas jede Woche
+      'kniebeuge_knieheben! s5 kniebeuge_halt ls_voll plank_bein nackendehnung',
+      'burpee_step! s2 standwaage plus_voll seitstuetz kobra',
+      'skater_schritt! ytw sumo ls_langsam dead_bug r3',
+      'kniebeuge_arme! ellbogen_oeffner seit_ausfall schwimmer plank r2',
+      'knieheben! schulterblaetter good_morning ls_eng bridge_single r1',
+      'burpee_step! s5 wandsitzen ls_voll plank_bein nackendehnung',
+      'fersen_po! kinn_stand ausfallschritt plus_voll seitstuetz r3',
+      'kniebeuge_knieheben! s2 standwaage superman_row mc_zuegig kobra',
+      'skater_schritt! ytw kniebeuge_halt ls_langsam plank r2',
+      'burpee_step! ellbogen_oeffner sumo schwimmer bird_dog r1',
+      'kniebeuge_arme! s5 seit_ausfall ls_voll plank_bein nackendehnung',
+      'burpee_step! s2 kniebeuge_halt plus_voll seitstuetz r3'
     ])
   };
 
-  /* Takt [Übung, Pause] in Sekunden – Gesamtdauer je Einheit rund 10 Minuten */
+  // Übung / Pause in Sekunden
   FM.takt = function (level, woche) {
-    if (level >= 2) return [55, 15];
-    if (woche <= 4) return [40, 30];
-    if (woche <= 8) return [50, 20];
-    return [55, 15];
+    if (level >= 2) return [45, 10];
+    if (woche <= 4) return [35, 20];
+    if (woche <= 8) return [40, 15];
+    return [45, 10];
   };
-  /* Phase für die Variantenregeln: 1–3 in Level 1, 4 = Level 2 */
-  FM.phase = function (level, woche) {
-    if (level >= 2) return 4;
-    return woche <= 4 ? 1 : (woche <= 8 ? 2 : 3);
-  };
+  FM.phase = function (level, woche) { if (level >= 2) return 4; return woche <= 4 ? 1 : (woche <= 8 ? 2 : 3); };
   FM.WARMUP_SEK = 60;
-  FM.UEBERGANG_SEK = 10;    // kurze Pause nach dem Warm-up zum Positionswechsel
-  FM.BODEN_PAUSE_SEK = 25;  // Mindestpause beim Wechsel vom Steh- zum Boden-Block
+  FM.AUSKLANG_SEK = 60;
+  FM.UEBERGANG_SEK = 10;
+  FM.BODEN_PAUSE_SEK = 25;
   FM.RUNDEN = 2;
+  FM.STEH_PLAETZE = ['A', 'B', 'C'];
+  FM.BODEN_PLAETZE = ['D', 'E'];
 })(typeof window !== 'undefined' ? window : globalThis);
 
 /* ---- tips.js ---- */
 /* =====================================================================
-   Fit-Me · Tipp des Tages (35 Tipps, 7 je Kategorie) und Quellen
+   Fit-Me · Tipp des Tages (45 Tipps, 9 je Kategorie) und Quellen
    ===================================================================== */
 (function (g) {
   'use strict';
@@ -1544,7 +2063,19 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     { id: 'tipp_32', kat: 'ernaehrung', text: 'Praktisch gerechnet: 250 g Magerquark liefern rund 30 g Eiweiß, 3 Eier etwa 20 g, 200 g gekochte Linsen rund 18 g.', quelle: 'Bundeslebensmittelschlüssel (BLS)' },
     { id: 'tipp_33', kat: 'ernaehrung', text: 'Pflanzlich geht auch: Sojaeiweiß unterstützte Kraft- und Muskelzuwachs in Studien genauso gut wie tierisches Eiweiß.', quelle: 'Messina et al. 2018' },
     { id: 'tipp_34', kat: 'ernaehrung', text: 'Eiweiß am Abend: Eine Portion Eiweiß vor dem Schlafen steigerte bei regelmäßigem Krafttraining in einer Studie den Muskel- und Kraftzuwachs.', quelle: 'Snijders et al. 2015' },
-    { id: 'tipp_35', kat: 'ernaehrung', text: 'Grundbedarf kennen: Für Erwachsene empfiehlt die DGE 0,8 g Eiweiß pro kg Körpergewicht – wer Kraft trainiert, darf mehr essen.', quelle: 'DGE-Referenzwerte' }
+    { id: 'tipp_35', kat: 'ernaehrung', text: 'Grundbedarf kennen: Für Erwachsene empfiehlt die DGE 0,8 g Eiweiß pro kg Körpergewicht – wer Kraft trainiert, darf mehr essen.', quelle: 'DGE-Referenzwerte' },
+
+    /* Neu in Version 2: Bauchfett, Muskelaufbau, Schlaf & Appetit */
+    { id: 'tipp_36', kat: 'nacken', text: 'Kopf in Verlängerung: Bei Übungen in Bauchlage oder im Stütz geht der Blick zum Boden. Wer den Kopf in den Nacken legt, belastet die Halswirbelsäule unnötig.', quelle: 'TU Dresden, Kraft mit Körper' },
+    { id: 'tipp_37', kat: 'nacken', text: 'Ein leichtes Ziehen ist erlaubt: Übungen, die kurz etwas unangenehm sind, schadeten bei chronischen Schmerzen in einer Metaanalyse nicht. Stechender oder ausstrahlender Schmerz heißt aber: sofort aufhören.', quelle: 'Smith et al. 2017' },
+    { id: 'tipp_38', kat: 'bewegung', text: 'Kein gezieltes Abnehmen: Sechs Wochen Bauchübungen an fünf Tagen pro Woche verringerten das Bauchfett in einer Studie nicht. Bauchfett schmilzt, wenn insgesamt Fett abgebaut wird.', quelle: 'Vispute et al. 2011' },
+    { id: 'tipp_39', kat: 'bewegung', text: 'Intervalle gegen Bauchfett: Intensives Intervalltraining senkte in einer Metaanalyse Gesamt-, Bauch- und Organfett. Auch kurze, harte Abschnitte zählen – wie deine Vollgas-Intervalle.', quelle: 'Maillard et al. 2018' },
+    { id: 'tipp_40', kat: 'gewohnheit', text: 'Steigern statt stehen bleiben: Fühlt sich eine Übung zwei Wochen lang leicht an, tausche sie über ⇄ gegen die schwerere Variante. Muskeln wachsen, wenn der Reiz langsam steigt.', quelle: 'ACSM 2009' },
+    { id: 'tipp_41', kat: 'gewohnheit', text: 'Maßband statt nur Waage: Als Orientierung gilt ein Taillenumfang unter der halben Körpergröße. Er sagt mehr über das Bauchfett als das Gewicht allein.', quelle: 'NICE 2022; Ashwell et al. 2012' },
+    { id: 'tipp_42', kat: 'schlaf', text: 'Wenig Schlaf macht hungrig: Nach zwei Nächten mit nur 4 Stunden Schlaf stiegen in einer Studie das Hungerhormon Ghrelin und der Appetit – besonders auf Kohlenhydratreiches.', quelle: 'Spiegel et al. 2004' },
+    { id: 'tipp_43', kat: 'schlaf', text: 'Schlaf hilft beim Abnehmen: Bei gleicher Diät verloren Teilnehmende mit 5,5 statt 8,5 Stunden Schlaf rund 55 % weniger Fett – und mehr Muskelmasse.', quelle: 'Nedeltcheva et al. 2010' },
+    { id: 'tipp_44', kat: 'ernaehrung', text: 'Sanft ins Defizit: Zum Abnehmen empfiehlt die deutsche Adipositas-Leitlinie ein Energiedefizit von etwa 500–600 kcal pro Tag – Crash-Diäten sind nicht nötig.', quelle: 'S3-Leitlinie Adipositas 2024' },
+    { id: 'tipp_45', kat: 'ernaehrung', text: 'Eiweiß beim Abnehmen: Eiweißreiche Kost während einer Diät erhielt in einer Metaanalyse mehr Muskelmasse und senkte das Fett etwas stärker als normale Kost.', quelle: 'Wycherley et al. 2012' }
   ];
 
   /* Quellenverzeichnis (Spezifikation + Tipps) */
@@ -1583,7 +2114,18 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     'Messina, M. et al. (2018): No difference between the effects of supplementing with soy protein versus animal protein on gains in muscle strength and lean body mass. International Journal of Sport Nutrition and Exercise Metabolism, 28(6).',
     'Snijders, T. et al. (2015): Protein ingestion before sleep increases muscle mass and strength gains during prolonged resistance-type exercise training in healthy young men. Journal of Nutrition, 145(6).',
     'Deutsche Gesellschaft für Ernährung (DGE): Referenzwerte für die Nährstoffzufuhr – Protein.',
-    'Bundeslebensmittelschlüssel (BLS): Nährwertdatenbank des Max Rubner-Instituts.'
+    'Bundeslebensmittelschlüssel (BLS): Nährwertdatenbank des Max Rubner-Instituts.',
+    'Smith, B. E. et al. (2017): Should exercises be painful in the management of chronic musculoskeletal pain? A systematic review and meta-analysis. British Journal of Sports Medicine, 51(23).',
+    'Vispute, S. S. et al. (2011): The effect of abdominal exercise on abdominal fat. Journal of Strength and Conditioning Research, 25(9).',
+    'Maillard, F. et al. (2018): Effect of high-intensity interval training on total, abdominal and visceral fat mass: a meta-analysis. Sports Medicine, 48(2).',
+    'NICE (2022): Obesity: identification, assessment and management (CG189) – Empfehlung zum Taille-Größe-Verhältnis.',
+    'Ashwell, M. et al. (2012): Waist-to-height ratio is a better screening tool than waist circumference and BMI for adult cardiometabolic risk factors: systematic review and meta-analysis. Obesity Reviews, 13(3).',
+    'Spiegel, K. et al. (2004): Sleep curtailment in healthy young men is associated with decreased leptin levels, elevated ghrelin levels, and increased hunger and appetite. Annals of Internal Medicine, 141(11).',
+    'Nedeltcheva, A. V. et al. (2010): Insufficient sleep undermines dietary efforts to reduce adiposity. Annals of Internal Medicine, 153(7).',
+    'Deutsche Adipositas-Gesellschaft u. a. (2024): Interdisziplinäre S3-Leitlinie Prävention und Therapie der Adipositas (AWMF 050-001).',
+    'Wycherley, T. P. et al. (2012): Effects of energy-restricted high-protein, low-fat compared with standard-protein, low-fat diets: a meta-analysis of randomized controlled trials. American Journal of Clinical Nutrition, 96(6).',
+    'TU Dresden, Dresdner Hochschulsportzentrum: Kraft mit Körper – Kraftübungen ohne Geräte (Übungssammlung).',
+    'AOK Gesundheitsmagazin: Krafttraining zu Hause – starke Muskeln ohne Geräte.'
   ];
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -1591,18 +2133,20 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
 /* =====================================================================
    Fit-Me · Logik (ohne Oberfläche, testbar)
    Datenmodell, Fortschritt, Streak mit Wochenend-Puffer, Tipp-Rotation,
-   Trainingsablauf, Auswertungen, Backup.
+   Trainingsablauf, Übungstausch, Auswertungen, Backup.
    ===================================================================== */
 (function (g) {
   'use strict';
   var FM = g.FM = g.FM || {};
   var L = FM.logic = {};
-  var VERSION = 1;
+  var VERSION = 1;            // Datenformat – Version 2 der App ergänzt nur Felder (abwärtskompatibel)
   L.STORE_KEY = 'fitme';
   L.EINHEITEN_PRO_WOCHE = 5;
   L.WOCHEN = 12;
   L.EINHEITEN_PRO_LEVEL = 60;
-  L.MAX_UEBERSPRUNGEN = 2;   // mindestens 6 von 8 Hauptintervallen
+  L.MAX_UEBERSPRUNGEN = 2;   // mindestens 8 von 10 Hauptintervallen
+  L.HAUPT_INTERVALLE = 10;
+  L.FARBSCHEMATA = ['lime', 'tuerkis', 'orange', 'pink', 'hell', 'auto'];
 
   /* ---------- Datum (lokale Kalendertage) ---------- */
   function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -1616,13 +2160,14 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
   L.weekday = function (k) { return (new Date(utc(k)).getUTCDay() + 6) % 7; }; // 0 = Montag
 
   /* ---------- Datenmodell ---------- */
-  L.emptyStore = function () { return { version: VERSION, aktivesProfil: null, profile: [] }; };
+  L.emptyStore = function () { return { version: VERSION, aktivesProfil: null, profile: [], farbschema: 'lime' }; };
   L.newProfile = function (name, plan, heute) {
     return {
       id: 'p' + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36),
       name: name, level: 1, runde: 1, woche: 1,
       wennDannPlan: plan, stumm: false, hinweisBestaetigt: true,
       geseheneTipps: [], tippHeute: null, einheiten: [],
+      tausch: null, ersetzt: {},
       erstellt: heute || L.dateKey()
     };
   };
@@ -1649,7 +2194,25 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
       };
     }) : [];
     p.woche = L.progress(p).woche;
+    fixSwaps(p);
     return p;
+  }
+  function slotOf(id) { return FM.EX[id] && FM.EX[id].slot; }
+  function fixSwaps(p) {
+    var ok = p.tausch && typeof p.tausch === 'object' && typeof p.tausch.key === 'string' && p.tausch.map && typeof p.tausch.map === 'object';
+    if (ok) {
+      var map = {};
+      Object.keys(p.tausch.map).forEach(function (k) { if (slotOf(p.tausch.map[k]) === k) map[k] = p.tausch.map[k]; });
+      p.tausch = { key: p.tausch.key, map: map };
+    } else p.tausch = null;
+    var e = {};
+    if (p.ersetzt && typeof p.ersetzt === 'object') {
+      Object.keys(p.ersetzt).forEach(function (k) {
+        var v = p.ersetzt[k];
+        if (k !== v && slotOf(k) && slotOf(k) === slotOf(v)) e[k] = v;
+      });
+    }
+    p.ersetzt = e;
   }
   function clampInt(v, a, b) { v = parseInt(v, 10); if (isNaN(v)) return null; return Math.max(a, Math.min(b, v)); }
 
@@ -1658,7 +2221,8 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     if (typeof s.version !== 'number') throw new Error('Versionsangabe fehlt');
     if (s.version > VERSION) throw new Error('Backup stammt aus einer neueren App-Version');
     if (!Array.isArray(s.profile)) throw new Error('Profilliste fehlt');
-    var out = { version: VERSION, aktivesProfil: s.aktivesProfil || null, profile: s.profile.map(fixProfile) };
+    var out = { version: VERSION, aktivesProfil: s.aktivesProfil || null, profile: s.profile.map(fixProfile),
+      farbschema: L.FARBSCHEMATA.indexOf(s.farbschema) > -1 ? s.farbschema : 'lime' };
     if (!out.profile.some(function (p) { return p.id === out.aktivesProfil; })) out.aktivesProfil = out.profile.length ? out.profile[0].id : null;
     return out;
   };
@@ -1754,7 +2318,7 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     p.woche = 1;
   };
   L.restartLevel = function (p) { p.runde = Math.max(p.runde, maxRunde(p, p.level)) + 1; p.woche = 1; };
-  L.resetAll = function (p) { p.einheiten = []; p.level = 1; p.runde = 1; p.woche = 1; p.geseheneTipps = []; p.tippHeute = null; };
+  L.resetAll = function (p) { p.einheiten = []; p.level = 1; p.runde = 1; p.woche = 1; p.geseheneTipps = []; p.tippHeute = null; p.tausch = null; };
   function maxRunde(p, level) {
     var m = 0;
     p.einheiten.forEach(function (e) { if (e.level === level && e.runde > m) m = e.runde; });
@@ -1791,28 +2355,79 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     p.tippHeute = { datum: heute, id: tip.id };
   };
 
-  /* ---------- Trainingsablauf (Blocksystem) ----------
-     Warm-up → Übergang → A B A B (Stehen) → C D C D (Boden) */
+  /* ---------- Wochenplan mit Tausch ----------
+     Reihenfolge: Plan → dauerhafte Ersetzung → Tausch für die laufende Woche */
+  L.weekKey = function (level, runde, woche) { return 'L' + level + '-R' + runde + '-W' + woche; };
+  L.planWeek = function (level, woche) { return FM.PROGRAM[level][Math.min(12, Math.max(1, woche)) - 1]; };
+  function dauerhaft(p, id) {
+    var seen = {}, e = p.ersetzt || {};
+    while (e[id] && !seen[id]) { seen[id] = true; id = e[id]; }
+    return id;
+  }
+  L.resolveWeek = function (p, heute) {
+    var pr = L.progress(p, heute), r = L.planWeek(pr.level, pr.woche);
+    var key = L.weekKey(pr.level, pr.runde, pr.woche);
+    var woche = p.tausch && p.tausch.key === key ? p.tausch.map : {};
+    var out = { level: pr.level, runde: pr.runde, woche: pr.woche, key: key, slots: {}, getauscht: 0 };
+    FM.SLOT_ORDER.forEach(function (k) {
+      var base = r.slots[k], perm = dauerhaft(p, base), id = perm, src = perm !== base ? 'dauer' : 'plan';
+      if (woche[k] && FM.EX[woche[k]] && woche[k] !== perm) { id = woche[k]; src = 'woche'; }
+      if (src === 'woche') out.getauscht++;
+      out.slots[k] = { id: id, base: base, perm: perm, src: src, power: k === 'A' && r.power && !!FM.EX[id].power };
+    });
+    return out;
+  };
+  // Alternativen für einen Platz: gleiche Position und gleicher Zweck, mit leichter/schwerer
+  L.alternatives = function (slot, currentId) {
+    var cur = FM.EX[currentId], st = cur ? cur.stufe : 1;
+    return Object.keys(FM.EX).filter(function (id) {
+      var e = FM.EX[id];
+      return e.slot === slot && !e.jump && id !== currentId;
+    }).map(function (id) {
+      var d = FM.EX[id].stufe - st;
+      return { id: id, rel: d < 0 ? 'leichter' : (d > 0 ? 'schwerer' : 'gleich'), stufe: FM.EX[id].stufe };
+    }).sort(function (a, b) { return a.stufe - b.stufe || FM.EX[a.id].name.localeCompare(FM.EX[b.id].name, 'de'); });
+  };
+  // Tauschen: dauerhaft = in allen Wochen statt der Plan-Übung, sonst nur für die laufende Woche
+  L.setSwap = function (p, slot, newId, dauerhaftTauschen, heute) {
+    if (!FM.EX[newId] || FM.EX[newId].slot !== slot) throw new Error('Übung passt nicht auf diesen Platz');
+    var w = L.resolveWeek(p, heute), s = w.slots[slot];
+    if (!p.ersetzt) p.ersetzt = {};
+    if (!p.tausch || p.tausch.key !== w.key) p.tausch = { key: w.key, map: {} };
+    if (dauerhaftTauschen) {
+      if (newId === s.base) delete p.ersetzt[s.base]; else p.ersetzt[s.base] = newId;
+      delete p.tausch.map[slot];
+    } else if (newId === dauerhaft(p, s.base)) delete p.tausch.map[slot];
+    else p.tausch.map[slot] = newId;
+    return L.resolveWeek(p, heute).slots[slot];
+  };
+  L.resetWeekSwaps = function (p) { p.tausch = null; };
+  L.removeReplacement = function (p, baseId) { if (p.ersetzt) delete p.ersetzt[baseId]; };
+
+  /* ---------- Trainingsablauf ----------
+     Warm-up → Übergang → A B C A B C (Stehen) → D E D E (Boden) → Übergang → Ausklang */
   L.buildSession = function (p, heute) {
-    var pr = L.progress(p, heute);
-    var level = pr.level, woche = pr.woche;
-    var r = FM.PROGRAM[level][woche - 1];
-    var tk = FM.takt(level, woche);
-    var it = r.items;
-    var folge = [[it[0], 1], [it[1], 1], [it[0], 2], [it[1], 2], [it[2], 1], [it[3], 1], [it[2], 2], [it[3], 2]];
-    var steps = [{ typ: 'uebung', ex: r.warm, dauer: FM.WARMUP_SEK, nr: 1, warm: true }];
-    steps.push({ typ: 'pause', dauer: FM.UEBERGANG_SEK, next: it[0].id, nextPower: it[0].power, nextRunde: 1, uebergang: true });
+    var w = L.resolveWeek(p, heute), S = w.slots;
+    var tk = FM.takt(w.level, w.woche);
+    var folge = [];
+    for (var r = 1; r <= FM.RUNDEN; r++) FM.STEH_PLAETZE.forEach(function (k) { folge.push([k, r]); });
+    for (r = 1; r <= FM.RUNDEN; r++) FM.BODEN_PLAETZE.forEach(function (k) { folge.push([k, r]); });
+    var steps = [{ typ: 'uebung', ex: S.W.id, slot: 'W', dauer: FM.WARMUP_SEK, nr: 1, warm: true }];
+    steps.push({ typ: 'pause', dauer: FM.UEBERGANG_SEK, next: S.A.id, nextSlot: 'A', nextPower: S.A.power, nextRunde: 1, uebergang: true });
     folge.forEach(function (x, i) {
-      steps.push({ typ: 'uebung', ex: x[0].id, power: x[0].power, runde: x[1], dauer: tk[0], nr: i + 2, haupt: true });
+      var k = x[0], ex = S[k].id;
+      steps.push({ typ: 'uebung', ex: ex, slot: k, power: S[k].power, runde: x[1], dauer: tk[0], nr: i + 2, haupt: true });
       if (i < folge.length - 1) {
-        var nx = folge[i + 1];
-        var zumBoden = FM.EX[nx[0].id].pos === 'boden' && FM.EX[x[0].id].pos !== 'boden';
-        steps.push({ typ: 'pause', dauer: zumBoden ? Math.max(tk[1], FM.BODEN_PAUSE_SEK) : tk[1], next: nx[0].id, nextPower: nx[0].power, nextRunde: nx[1], zumBoden: zumBoden });
+        var nk = folge[i + 1][0], nx = S[nk].id;
+        var zumBoden = FM.EX[nx].pos === 'boden' && FM.EX[ex].pos !== 'boden';
+        steps.push({ typ: 'pause', dauer: zumBoden ? Math.max(tk[1], FM.BODEN_PAUSE_SEK) : tk[1], next: nx, nextSlot: nk, nextPower: S[nk].power, nextRunde: folge[i + 1][1], zumBoden: zumBoden });
       }
     });
+    steps.push({ typ: 'pause', dauer: FM.UEBERGANG_SEK, next: S.Z.id, nextSlot: 'Z', nextPower: false, nextRunde: 0, uebergang: true, zumAusklang: true });
+    steps.push({ typ: 'uebung', ex: S.Z.id, slot: 'Z', dauer: FM.AUSKLANG_SEK, nr: folge.length + 2, ausklang: true });
     var gesamt = steps.reduce(function (s, x) { return s + x.dauer; }, 0);
     var anzahl = steps.filter(function (x) { return x.typ === 'uebung'; }).length;
-    return { level: level, woche: woche, runde: pr.runde, takt: tk, steps: steps, gesamt: gesamt, anzahl: anzahl, routine: r };
+    return { level: w.level, woche: w.woche, runde: w.runde, takt: tk, steps: steps, gesamt: gesamt, anzahl: anzahl, plan: w };
   };
 
   /* ---------- Auswertungen ---------- */
@@ -1931,9 +2546,47 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     heart: ico('<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.2a4.2 4.2 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/>'),
     book: ico('<path d="M5 4.5h9.5a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h9.5"/>'),
     warn: ico('<path d="M12 3.5l9.5 16.5h-19z"/><path d="M12 10v4.5M12 17.2v.3"/>'),
-    arrowR: ico('<path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5"/>')
+    arrowR: ico('<path d="M4 12h15M13.5 6.5L19 12l-5.5 5.5"/>'),
+    mirror: ico('<path d="M12 3.5v17" stroke-dasharray="2.2 2.8"/><path d="M8 7.5L3.5 12 8 16.5M16 7.5l4.5 4.5-4.5 4.5"/>'),
+    shield: ico('<path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M8.6 12.2l2.4 2.4 4.4-4.8"/>'),
+    palette: ico('<path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.3 0 2-.9 2-2 0-1.3-1.2-1.6-1.2-2.8 0-1 .8-1.7 1.8-1.7H17a3.5 3.5 0 0 0 3.5-3.5c0-3.9-3.8-7-8.5-7z"/><circle cx="7.6" cy="11" r="1.1" fill="currentColor"/><circle cx="10.6" cy="7.4" r="1.1" fill="currentColor"/><circle cx="15.1" cy="7.8" r="1.1" fill="currentColor"/>')
   };
   var LOGO = '<svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1A1C21"/><g fill="none" stroke="#C6F432" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 24.5h7M6 31h7M9.5 37.5h5" stroke-opacity="0.35" stroke-width="3.2"/><path d="M37.5 22.5L31 37.5"/><path d="M36.5 25L45 27.5 51.5 21"/><path d="M36 25.5L27.5 30.5 21 27"/><path d="M31 37.5L40.5 43.5 40 53.5"/><path d="M31 37.5L24.5 46.5 16 45.5"/></g><circle cx="40.5" cy="14" r="5.6" fill="#C6F432"/></svg>';
+
+  /* ---------- Farbschemata ---------- */
+  var THEMES = {
+    lime: { name: 'Limette', dark: true, acc: '#C6F432', accBack: '#7E9A2A' },
+    tuerkis: { name: 'Türkis', dark: true, acc: '#2DD4BF', accBack: '#1F8A7C' },
+    orange: { name: 'Orange', dark: true, acc: '#FF9F43', accBack: '#A96A2E' },
+    pink: { name: 'Pink', dark: true, acc: '#FF7AB6', accBack: '#A9587E' },
+    hell: { name: 'Hell', dark: false, acc: '#3F7A0C', accBack: '#9DC37A' }
+  };
+  var THEME_ORDER = ['lime', 'tuerkis', 'orange', 'pink', 'hell', 'auto'];
+  // Diagrammfarben je Hell/Dunkel (mit dem Dataviz-Validator geprüft): Verspannung blau, Wohlbefinden grün
+  var CHART = {
+    dark: { v: '#4C8DF0', b: '#82A300', grid: '#2A2D33', axis: '#9AA0A6', label: '#F5F6F7', ring: '#1A1C21', cross: '#9AA0A6' },
+    light: { v: '#2F6FD6', b: '#6F8C00', grid: '#E3E6EA', axis: '#5F656D', label: '#14161A', ring: '#FFFFFF', cross: '#8A9099' }
+  };
+  var mqLight = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+  function effectiveTheme() {
+    var id = (store && store.farbschema) || 'lime';
+    if (id === 'auto') return mqLight && mqLight.matches ? 'hell' : 'lime';
+    return THEMES[id] ? id : 'lime';
+  }
+  function applyTheme() {
+    var id = effectiveTheme(), t = THEMES[id];
+    document.documentElement.setAttribute('data-theme', id);
+    FM.setFigureColors(t.dark
+      ? { fg: '#F5F6F7', bg: '#9AA0A6', acc: t.acc, accBack: t.accBack, ink: '#0E0F12', env: '#9AA0A6' }
+      : { fg: '#1E2228', bg: '#A9AFB7', acc: t.acc, accBack: t.accBack, ink: '#F2F3F5', env: '#8A9099' });
+    thumbCache = {};
+    ui.dark = t.dark;
+    var mt = document.querySelector('meta[name="theme-color"]');
+    if (mt) mt.setAttribute('content', t.dark ? '#0E0F12' : '#F2F3F5');
+    var cs = document.querySelector('meta[name="color-scheme"]');
+    if (cs) cs.setAttribute('content', t.dark ? 'dark' : 'light');
+  }
+  function chartCol() { return ui.dark === false ? CHART.light : CHART.dark; }
 
   /* ---------- Speicher ---------- */
   var store = null;
@@ -1993,7 +2646,7 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
         if (b) { var bt = btns[+b.getAttribute('data-dlg')]; close(bt.value === undefined ? null : bt.value); }
         else if (e.target === back && o.dismiss !== false) close(null);
       });
-      if (o.onOpen) o.onOpen(back);
+      if (o.onOpen) o.onOpen(back, close);
     });
   }
   function confirmDlg(title, text, okLabel, danger, cancelLabel) {
@@ -2080,7 +2733,7 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
   };
 
   /* ---------- Navigation ---------- */
-  var ui = { tab: 'heute', monat: null, modus: 'einzel' };
+  var ui = { tab: 'heute', monat: null, modus: 'einzel', dark: true };
   var TABS = [['heute', 'Heute', I.sun], ['kalender', 'Kalender', I.cal], ['verlauf', 'Verlauf', I.chart], ['einstellungen', 'Einstellungen', I.sliders]];
   function renderTabbar() {
     $('#tabbar').innerHTML = '<div class="tabs">' + TABS.map(function (t) {
@@ -2114,33 +2767,31 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
   }
   var thumbCache = {};
   function thumb(anim) { return thumbCache[anim] || (thumbCache[anim] = FM.figureThumb(anim)); }
-  function exBadges(e, power, warm, sek) {
-    var b = [];
-    if (warm) b.push('<span class="badge">Warm-up · 60 s</span>');
-    else if (sek) b.push('<span class="badge num">2 × ' + sek + ' s</span>');
-    if (power) b.push('<span class="badge acc">' + I.bolt + 'Vollgas</span>');
-    if (e.jump) b.push('<span class="badge">' + I.jump + 'Sprung</span>');
-    if (e.side) b.push('<span class="badge">' + I.swap + (e.halbzeit ? 'Wechsel zur Halbzeit' : 'Seitenwechsel') + '</span>');
+  function sideBadge(e) { return e.side ? '<span class="badge">' + I.mirror + (e.halbzeit ? 'Wechsel zur Halbzeit' : 'Seitenwechsel') + '</span>' : ''; }
+  function dauerLabel(k, tk) { return k === 'W' ? 'Warm-up · 60 s' : (k === 'Z' ? 'Ausklang · 60 s' : '2 × ' + tk[0] + ' s'); }
+  function exRow(k, sl, nr, tk) {
+    var e = EX[sl.id], b = [];
+    b.push('<span class="badge num">' + dauerLabel(k, tk) + '</span>');
+    if (sl.power) b.push('<span class="badge acc">' + I.bolt + 'Vollgas</span>');
+    b.push(sideBadge(e));
     if (e.pos === 'sitzen') b.push('<span class="badge">Sitzen oder Stehen</span>');
     if (e.ref) b.push('<span class="badge outline">' + e.ref + '</span>');
-    return b.join('');
-  }
-  function exRow(x, nr, sek) {
-    var e = EX[x.id], b = exBadges(e, x.power, x.warm, sek), link = '';
-    if (e.ref) {
-      var R = FM.REF_LINKS[e.ref.charAt(0)];
-      link = '<a class="info-link" href="' + R.url + '" target="_blank" rel="noopener" aria-label="Originalbeitrag ansehen: ' + esc(R.titel) + '">' + I.ext + '</a>';
-    }
-    return '<div class="ex-row" role="button" tabindex="0" data-act="vorschau" data-id="' + x.id + '"' + (x.power ? ' data-power="1"' : '') + (x.warm ? ' data-warm="1"' : '') + (sek ? ' data-sek="' + sek + '"' : '') + ' aria-label="Vorschau: ' + esc(e.name) + '"><span class="ex-idx num">' + nr + '</span><div class="thumb">' + thumb(e.anim) + '</div>' +
-      '<div class="ex-main"><div class="ex-name">' + esc(e.name) + '</div>' + (b ? '<div class="ex-meta badges">' + b + '</div>' : '') + '</div>' + link + '</div>';
+    if (sl.src === 'woche') b.push('<span class="badge swapped">' + I.swap + 'Diese Woche getauscht</span>');
+    if (sl.src === 'dauer') b.push('<span class="badge swapped">' + I.swap + 'Dauerhaft ersetzt</span>');
+    return '<div class="ex-row"><button class="ex-open" data-act="vorschau" data-slot="' + k + '" aria-label="Vorschau: ' + esc(e.name) + '">' +
+      '<span class="ex-idx num">' + nr + '</span><span class="thumb">' + thumb(e.anim) + '</span>' +
+      '<span class="ex-main">' + (k === 'W' || k === 'Z' ? '' : '<span class="ex-slot">' + esc(FM.SLOTS[k].name) + '</span>') + '<span class="ex-name">' + esc(e.name) + '</span><span class="ex-meta badges">' + b.join('') + '</span></span></button>' +
+      '<button class="swap-btn" data-act="tauschen" data-slot="' + k + '" aria-label="' + esc(e.name) + ' tauschen">' + I.swap + '</button></div>';
   }
   function routineCard(p) {
-    var s = L.buildSession(p), r = s.routine, tk = s.takt, it = r.items;
+    var s = L.buildSession(p), w = s.plan, S = w.slots, tk = s.takt;
     var h = '<section class="card"><div class="routine-head"><h2>Heutige Routine</h2><span class="muted num">' + tk[0] + ' s Übung · ' + tk[1] + ' s Pause · ' + mmss(s.gesamt) + ' Min</span></div>' +
-      '<p class="routine-tip">Tippe auf eine Übung, um sie in Bewegung zu sehen.</p>';
-    h += '<div class="group-label">Warm-up</div>' + exRow({ id: r.warm, warm: true }, 1);
-    h += '<div class="group-label">Im Stehen · 2 Runden im Wechsel</div>' + exRow(it[0], 2, tk[0]) + exRow(it[1], 3, tk[0]);
-    h += '<div class="group-label">Am Boden · 2 Runden im Wechsel</div>' + exRow(it[2], 4, tk[0]) + exRow(it[3], 5, tk[0]);
+      '<p class="routine-tip">Tippe auf eine Übung für die Vorschau – mit ' + I.swap + ' tauschst du sie.</p>';
+    h += '<div class="group-label">Warm-up</div>' + exRow('W', S.W, 1, tk);
+    h += '<div class="group-label">Im Stehen · 2 Runden im Wechsel</div>' + exRow('A', S.A, 2, tk) + exRow('B', S.B, 3, tk) + exRow('C', S.C, 4, tk);
+    h += '<div class="group-label">Am Boden · 2 Runden im Wechsel</div>' + exRow('D', S.D, 5, tk) + exRow('E', S.E, 6, tk);
+    h += '<div class="group-label">Ausklang</div>' + exRow('Z', S.Z, 7, tk);
+    if (w.getauscht) h += '<button class="link-btn" data-act="tauschReset">' + I.refresh + 'Tausch dieser Woche zurücksetzen</button>';
     return h + '</section>';
   }
   function levelDoneCard(pr) {
@@ -2193,10 +2844,10 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
   }
 
   /* ================= F6 · Verlauf ================= */
-  var COL_V = '#4C8DF0', COL_B = '#C6F432';
   function kpi(val, lbl, wide) { return '<div class="card kpi' + (wide ? ' wide' : '') + '"><div class="val num">' + val + '</div><div class="lbl">' + lbl + '</div></div>'; }
   function viewVerlauf(p) {
     var k = L.kpis(p);
+    var C = chartCol(), COL_V = C.v, COL_B = C.b;
     var h = '<header class="page-head"><div><h1>Verlauf</h1><div class="sub">Verspannung, Wohlbefinden, Trainingszeit</div></div></header><div class="kpi-grid">';
     h += kpi(k.einheiten, 'Absolvierte Einheiten' + (k.zusatz ? ' <span class="muted">(+' + k.zusatz + ' extra)</span>' : ''));
     h += kpi(k.minutenWoche + ' <small>Min</small>', 'Diese Woche (Mo–So)');
@@ -2239,20 +2890,20 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
   function drawChart(p) {
     var box = $('#chart');
     if (!box) return;
-    var data = chartData(p);
+    var data = chartData(p), C = chartCol(), COL_V = C.v, COL_B = C.b;
     if (!data.length) { box.innerHTML = '<div class="empty">Noch keine Bewertungen. Nach deinem ersten Training erscheint hier dein Verlauf.</div>'; return; }
     var W = Math.max(260, Math.round(box.clientWidth || 320)), H = 210, pl = 24, pr = 30, pt = 12, pb = 26, n = data.length;
     function x(i) { return n === 1 ? pl + (W - pl - pr) / 2 : pl + i * (W - pl - pr) / (n - 1); }
     function y(v) { return pt + (10 - v) * (H - pt - pb) / 9; }
     var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Liniendiagramm: Verspannung und Wohlbefinden im Verlauf">';
     [1, 5, 10].forEach(function (v) {
-      s += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="#2A2D33" stroke-width="1"/>' +
-        '<text x="' + (pl - 8) + '" y="' + (y(v) + 4) + '" text-anchor="end" font-size="11" fill="#9AA0A6">' + v + '</text>';
+      s += '<line x1="' + pl + '" x2="' + (W - pr) + '" y1="' + y(v) + '" y2="' + y(v) + '" stroke="' + C.grid + '" stroke-width="1"/>' +
+        '<text x="' + (pl - 8) + '" y="' + (y(v) + 4) + '" text-anchor="end" font-size="11" fill="' + C.axis + '">' + v + '</text>';
     });
     var idx = n <= 6 ? data.map(function (_, i) { return i; }) : [0, Math.round((n - 1) / 2), n - 1];
     idx.forEach(function (i) {
       var anchor = n > 1 && i === 0 ? 'start' : (n > 1 && i === n - 1 ? 'end' : 'middle');
-      s += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="' + anchor + '" font-size="11" fill="#9AA0A6">' + esc(data[i].label) + '</text>';
+      s += '<text x="' + x(i) + '" y="' + (H - 6) + '" text-anchor="' + anchor + '" font-size="11" fill="' + C.axis + '">' + esc(data[i].label) + '</text>';
     });
     function path(key) { return data.map(function (d, i) { return (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(d[key]).toFixed(1); }).join(''); }
     s += '<path d="' + path('v') + '" fill="none" stroke="' + COL_V + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
@@ -2260,15 +2911,15 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     var dense = n > 36;
     data.forEach(function (d, i) {
       if (dense && i !== n - 1) return;
-      s += '<rect x="' + (x(i) - 4).toFixed(1) + '" y="' + (y(d.v) - 4).toFixed(1) + '" width="8" height="8" rx="1.5" fill="' + COL_V + '" stroke="#1A1C21" stroke-width="2"/>';
-      s += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(d.b).toFixed(1) + '" r="4.5" fill="' + COL_B + '" stroke="#1A1C21" stroke-width="2"/>';
+      s += '<rect x="' + (x(i) - 4).toFixed(1) + '" y="' + (y(d.v) - 4).toFixed(1) + '" width="8" height="8" rx="1.5" fill="' + COL_V + '" stroke="' + C.ring + '" stroke-width="2"/>';
+      s += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(d.b).toFixed(1) + '" r="4.5" fill="' + COL_B + '" stroke="' + C.ring + '" stroke-width="2"/>';
     });
     // direkte Beschriftung am letzten Punkt
     var last = data[n - 1], yv = y(last.v) + 4, yb = y(last.b) + 4;
     if (Math.abs(yv - yb) < 14) { if (yv <= yb) { yv -= 7; yb += 7; } else { yv += 7; yb -= 7; } }
-    s += '<text x="' + (x(n - 1) + 8) + '" y="' + yv + '" font-size="12" font-weight="700" fill="#F5F6F7">' + fmt1(last.v) + '</text>';
-    s += '<text x="' + (x(n - 1) + 8) + '" y="' + yb + '" font-size="12" font-weight="700" fill="#F5F6F7">' + fmt1(last.b) + '</text>';
-    s += '<line class="ch-x" x1="0" x2="0" y1="' + pt + '" y2="' + (H - pb) + '" stroke="#9AA0A6" stroke-width="1" stroke-dasharray="3 3" style="display:none"/>';
+    s += '<text x="' + (x(n - 1) + 8) + '" y="' + yv + '" font-size="12" font-weight="700" fill="' + C.label + '">' + fmt1(last.v) + '</text>';
+    s += '<text x="' + (x(n - 1) + 8) + '" y="' + yb + '" font-size="12" font-weight="700" fill="' + C.label + '">' + fmt1(last.b) + '</text>';
+    s += '<line class="ch-x" x1="0" x2="0" y1="' + pt + '" y2="' + (H - pb) + '" stroke="' + C.cross + '" stroke-width="1" stroke-dasharray="3 3" style="display:none"/>';
     s += '<rect class="ch-hit" x="0" y="0" width="' + W + '" height="' + H + '" fill="transparent"/></svg><div class="chart-tip"></div>';
     box.innerHTML = s;
     var svg = box.querySelector('svg'), cross = box.querySelector('.ch-x'), tip = box.querySelector('.chart-tip'), hit = box.querySelector('.ch-hit');
@@ -2307,10 +2958,18 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
         '<div class="s">Level ' + pq.level + ' · Woche ' + pq.woche + ' von 12 · ' + L.counted(q).length + ' Einheiten</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>';
     });
     h += item('profilNeu', I.plus, 'Profil anlegen', 'Für weitere Personen – mit eigenem Fortschritt') + '</div>';
+    var nErs = Object.keys(p.ersetzt || {}).length;
     h += '<div class="section-title">Training</div><div class="list">' +
       item('toene', p.stumm ? I.mute : I.speaker, 'Signaltöne', 'Dezente Töne bei Start, Halbzeit und in den letzten 3 Sekunden', false,
         '<span class="switch' + (p.stumm ? '' : ' on') + '" role="switch" aria-checked="' + (!p.stumm) + '"></span>') +
-      item('plan', I.plan, 'Wenn-Dann-Plan', esc(p.wennDannPlan || 'Noch kein Plan festgelegt')) + '</div>';
+      item('plan', I.plan, 'Wenn-Dann-Plan', esc(p.wennDannPlan || 'Noch kein Plan festgelegt')) +
+      item('ersetzungen', I.swap, 'Dauerhaft ersetzte Übungen', nErs ? nErs + (nErs === 1 ? ' Übung ersetzt' : ' Übungen ersetzt') : 'Keine – auf „Heute“ über ⇄ möglich') + '</div>';
+    h += '<div class="section-title">Darstellung</div><div class="card theme-card"><div class="theme-grid" role="radiogroup" aria-label="Farbschema">' +
+      THEME_ORDER.map(function (id) {
+        var on = (store.farbschema || 'lime') === id, t = THEMES[id];
+        var sw = id === 'auto' ? '<span class="sw sw-auto"><i></i></span>' : '<span class="sw' + (t.dark ? '' : ' sw-light') + '"><i style="background:' + t.acc + '"></i></span>';
+        return '<button class="theme-opt" role="radio" aria-checked="' + on + '" data-act="farbe" data-v="' + id + '">' + sw + '<span>' + (id === 'auto' ? 'Automatisch' : t.name) + '</span></button>';
+      }).join('') + '</div><p class="theme-note">„Automatisch“ folgt der Hell/Dunkel-Einstellung deines Geräts.</p></div>';
     h += '<div class="section-title">Datensicherung</div><div class="list">' +
       item('backupKopie', I.copy, 'Backup kopieren', 'Kompletter Datenstand in die Zwischenablage') +
       item('backupDatei', I.download, 'Als JSON speichern', 'Datei z. B. in „Dateien“ ablegen') +
@@ -2321,7 +2980,8 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
       item('allesReset', I.trash, 'Gesamten Fortschritt zurücksetzen', 'Löscht alle Einheiten dieses Profils', true) + '</div>';
     h += '<div class="section-title">Info</div><div class="list">' +
       item('hinweis', I.heart, 'Gesundheitshinweis', 'Bitte vor dem Training lesen') +
-      item('quellen', I.book, 'Wissenschaftliche Quellen', FM.QUELLEN.length + ' Studien und Leitlinien') + '</div>';
+      item('sicher', I.shield, 'Sicher trainieren', 'Schmerz-Ampel, Atmung, richtig steigern') +
+      item('quellen', I.book, 'Wissenschaftliche Quellen', FM.QUELLEN.length + ' Studien, Leitlinien und Übungsquellen') + '</div>';
     h += '<div class="version">Fit-Me ' + esc(FM.APP_VERSION || '') + '</div>';
     return h;
   }
@@ -2342,7 +3002,7 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
       '<label class="field"><span>Dein Name</span><input class="input" id="obName" maxlength="30" autocomplete="given-name" enterkeyhint="next"></label>' +
       '<label class="field"><span>Dein Wenn-Dann-Plan</span><textarea class="input" id="obPlan" rows="3" maxlength="200">' + esc(PLAENE[0][1]) + '</textarea></label>' +
       '<div class="chips" style="margin:-8px 0 18px">' + PLAENE.map(function (pl, i) { return '<button class="chip" data-act="obPlan" data-i="' + i + '">' + esc(pl[0]) + '</button>'; }).join('') + '</div>' +
-      '<div class="card safety"><b>' + I.warn + 'Sicherheitshinweis</b><p class="muted">' + HINWEIS_KURZ + '</p>' +
+      '<div class="card safety"><b>' + I.warn + 'Sicherheitshinweis</b><p class="muted">' + HINWEIS_KURZ + ' <button class="inline-link" data-act="sicher">Sicher trainieren</button></p>' +
       '<label class="check"><input type="checkbox" id="obOk"> Verstanden</label></div>' +
       '<button class="btn btn-primary btn-big btn-block" id="obGo" data-act="obFertig" data-add="' + (add ? 1 : 0) + '" disabled>' + (add ? 'Profil anlegen' : 'Los geht’s') + '</button>' +
       (add ? '<button class="btn btn-ghost btn-block" style="margin-top:8px" data-act="schliessen">Abbrechen</button>' : '') +
@@ -2360,7 +3020,7 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     var b = ['<span class="badge">' + (e.pos === 'boden' ? I.floor : '') + FM.POS_LABEL[e.pos] + '</span>'];
     if (runde) b.push('<span class="badge num">Runde ' + runde + '/' + FM.RUNDEN + '</span>');
     if (power) b.push('<span class="badge acc">' + I.bolt + 'Vollgas</span>');
-    if (e.side) b.push('<span class="badge">' + I.swap + (e.halbzeit ? 'Wechsel zur Halbzeit' : 'Seitenwechsel') + '</span>');
+    b.push(sideBadge(e));
     if (e.ref) b.push('<span class="badge outline">' + e.ref + '</span>');
     if (toFloor) b.push('<span class="badge acc">' + I.floor + 'Jetzt zum Boden</span>');
     return b.join('');
@@ -2391,10 +3051,13 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     var st = T.ses.steps[T.i], isPause = st.typ === 'pause';
     var e = EX[isPause ? st.next : st.ex];
     $('.training').setAttribute('data-phase', isPause ? 'pause' : 'uebung');
-    $('#trPhase').textContent = isPause ? (st.uebergang ? 'Position einnehmen · als Nächstes' : 'Pause · als Nächstes') : (st.warm ? 'Warm-up' : (st.power ? 'Vollgas!' : 'Übung'));
+    var slot = isPause ? st.nextSlot : st.slot;
+    $('#trPhase').textContent = isPause ? (st.uebergang ? 'Position einnehmen · als Nächstes' : 'Pause · als Nächstes')
+      : (st.warm ? 'Warm-up' : (st.ausklang ? 'Ausklang' : (st.power ? 'Vollgas!' : 'Übung') + ' · ' + FM.SLOTS[slot].name));
     $('#trName').textContent = e.name;
     $('#trBadges').innerHTML = trBadges(e, isPause ? st.nextPower : st.power, isPause && st.zumBoden, isPause ? st.nextRunde : st.runde);
-    $('#trHint').textContent = e.hint;
+    // In der Pause: wichtigster Punkt zur nächsten Übung, während der Übung: Ausführung
+    $('#trHint').innerHTML = isPause && e.achte ? '<span class="tr-cue">' + I.check + 'Achte auf: ' + esc(e.achte[0]) + '</span><span class="tr-hint-txt">' + esc(e.hint) + '</span>' : esc(e.hint);
     $('#trNum').classList.remove('final');
     T.half = false; T.pre = false; T.animOffset = 0; T.fired = {}; T.lastShown = null;
     var sd = $('#trSide'); sd.classList.remove('show', 'pre');
@@ -2542,7 +3205,7 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
   }
   function showInvalid(skipped) {
     layer('<div class="screen success"><div class="screen-inner"><div class="big-check" style="background:var(--card2);color:var(--muted)">' + I.info + '</div>' +
-      '<h1>Diese Einheit zählt nicht</h1><p class="lead">Du hast ' + skipped + ' Übungen übersprungen. Damit eine Einheit zählt, brauchst du mindestens 6 der 8 Hauptintervalle.</p>' +
+      '<h1>Diese Einheit zählt nicht</h1><p class="lead">Du hast ' + skipped + ' Übungen übersprungen. Damit eine Einheit zählt, brauchst du mindestens ' + (L.HAUPT_INTERVALLE - L.MAX_UEBERSPRUNGEN) + ' der ' + L.HAUPT_INTERVALLE + ' Hauptintervalle.</p>' +
       '<button class="btn btn-primary btn-big btn-block" style="margin-top:24px" data-act="schliessen">Zurück zu Heute</button></div></div>');
   }
 
@@ -2643,18 +3306,28 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
   };
   A.levelansicht = function () { showLevelDone(); };
 
-  // Animierte Übungsvorschau auf „Heute“
-  A.vorschau = function (el, ev) {
-    if (ev && ev.target.closest('a')) return;      // Referenzlink normal öffnen
-    var id = el.getAttribute('data-id'), e = EX[id];
-    if (!e) return;
-    var sek = +el.getAttribute('data-sek') || 0, warm = el.getAttribute('data-warm') === '1';
+  // Animierte Übungsvorschau auf „Heute“ – mit „Achte auf“, typischen Fehlern und Tauschen
+  function cuesHtml(e) {
+    if (!e.achte) return '';
+    return '<div class="cues"><div class="cue-head ok">' + I.check + 'Achte auf</div><ul class="ok">' + e.achte.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' +
+      '<div class="cue-head bad">' + I.warn + 'Typische Fehler</div><ul class="bad">' + e.fehler.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>';
+  }
+  A.vorschau = function (el) {
+    var p = prof(), k = el.getAttribute('data-slot'), w = L.resolveWeek(p), sl = w.slots[k];
+    if (!sl) return;
+    var e = EX[sl.id], tk = FM.takt(w.level, w.woche), link = '';
+    if (e.ref) {
+      var R = FM.REF_LINKS[e.ref.charAt(0)];
+      link = '<a class="ref-link" href="' + R.url + '" target="_blank" rel="noopener">' + I.ext + 'Originalbeitrag ansehen (' + esc(R.titel) + ')</a>';
+    }
     var pv = { raf: 0, fig: null, t0: 0, half: -1 };
     dialog({
       title: e.name,
-      html: '<div class="pv-fig"></div><div class="badges pv-badges">' + trBadges(e, el.getAttribute('data-power') === '1', false, 0) + (warm ? '<span class="badge">Warm-up · 60 s</span>' : (sek ? '<span class="badge num">2 × ' + sek + ' s</span>' : '')) + '</div>' +
-        '<div class="txt"><p>' + esc(e.hint) + '</p>' + (e.side ? '<p class="pv-note">' + (e.halbzeit ? 'Zur Halbzeit: ' + esc(e.halbzeit.replace(/^Jetzt /, '')) + '.' : 'Zur Halbzeit wechselst du die Seite – die Vorschau zeigt beide Seiten im Wechsel.') + '</p>' : '') + '</div>',
-      buttons: [{ label: 'Schließen', value: null, cls: 'btn-primary' }],
+      html: '<div class="pv-fig"></div><div class="badges pv-badges"><span class="badge">' + esc(FM.SLOTS[k].name) + '</span><span class="badge num">' + dauerLabel(k, tk) + '</span>' +
+        (sl.power ? '<span class="badge acc">' + I.bolt + 'Vollgas</span>' : '') + sideBadge(e) + (e.ref ? '<span class="badge outline">' + e.ref + '</span>' : '') + '</div>' +
+        '<div class="txt"><p>' + esc(e.hint) + '</p>' + (e.side ? '<p class="pv-note">' + (e.halbzeit ? 'Zur Halbzeit: ' + esc(e.halbzeit.replace(/^Jetzt /, '')) + '.' : 'Zur Halbzeit wechselst du die Seite – die Vorschau zeigt beide Seiten im Wechsel.') + '</p>' : '') + '</div>' +
+        cuesHtml(e) + link,
+      buttons: [{ label: 'Schließen', value: null, cls: 'btn-primary' }, { label: 'Übung tauschen', value: 'swap', cls: 'btn-ghost' }],
       onOpen: function (box) {
         pv.fig = new FM.Figure(box.querySelector('.pv-fig'));
         pv.fig.set(e.anim);
@@ -2669,7 +3342,52 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
           pv.raf = requestAnimationFrame(loop);
         })();
       }
-    }).then(function () { cancelAnimationFrame(pv.raf); pv.raf = 0; pv.fig = null; });
+    }).then(function (r) {
+      cancelAnimationFrame(pv.raf); pv.raf = 0; pv.fig = null;
+      if (r.btn === 'swap') openSwap(k);
+    });
+  };
+
+  // Übung tauschen: Alternativen mit gleicher Position und gleichem Zweck
+  var REL_LBL = { leichter: 'leichter', gleich: 'gleich schwer', schwerer: 'schwerer' };
+  function openSwap(k) {
+    var p = prof(), w = L.resolveWeek(p), sl = w.slots[k], cur = EX[sl.id];
+    var alts = L.alternatives(k, sl.id), mitStufe = k !== 'W' && k !== 'Z';
+    var list = alts.map(function (a) {
+      var e = EX[a.id], tags = [];
+      if (a.id === sl.base) tags.push('<span class="badge outline">Plan</span>');
+      if (mitStufe) tags.push('<span class="badge rel rel-' + a.rel + '">' + REL_LBL[a.rel] + '</span>');
+      if (e.side) tags.push(sideBadge(e));
+      return '<button class="alt" data-alt="' + a.id + '"><span class="thumb">' + thumb(e.anim) + '</span><span class="alt-main"><span class="ex-name">' + esc(e.name) + '</span><span class="badges">' + tags.join('') + '</span></span></button>';
+    }).join('');
+    var info = sl.src === 'dauer' ? '<p class="swap-info">Dauerhaft ersetzt – im Plan steht „' + esc(EX[sl.base].name) + '“.</p>'
+      : (sl.src === 'woche' ? '<p class="swap-info">Diese Woche getauscht – im Plan steht „' + esc(EX[sl.perm].name) + '“.</p>' : '');
+    dialog({
+      title: 'Übung tauschen',
+      html: '<div class="txt"><p><b class="swap-cur">' + esc(FM.SLOTS[k].name) + ':</b> ' + esc(cur.name) + '</p>' + info + '</div>' +
+        '<label class="check swap-perm"><input type="checkbox" id="swPerm"><span>Dauerhaft ersetzen<small>Sonst gilt der Tausch für diese Woche – beide Runden, alle Einheiten.</small></span></label>' +
+        '<div class="alt-list">' + list + '</div>',
+      buttons: [{ label: 'Abbrechen', value: null }],
+      onOpen: function (box, close) {
+        box.querySelector('.alt-list').addEventListener('click', function (ev) {
+          var b = ev.target.closest('[data-alt]');
+          if (b) close({ id: b.getAttribute('data-alt'), perm: box.querySelector('#swPerm').checked });
+        });
+      }
+    }).then(function (r) {
+      if (!r.btn || !r.btn.id) return;
+      var vorher = sl.id, neu = L.setSwap(p, k, r.btn.id, r.btn.perm);
+      save(); render();
+      var n = EX[neu.id].name;
+      if (r.btn.perm) toast(neu.src === 'plan' ? 'Ersetzung aufgehoben: wieder „' + n + '“.' : 'Dauerhaft ersetzt: „' + n + '“ statt „' + EX[neu.base].name + '“.');
+      else toast(neu.src === 'woche' ? 'Für diese Woche getauscht: „' + n + '“.' : 'Zurück zum Plan: „' + n + '“.');
+      void vorher;
+    });
+  }
+  A.tauschen = function (el) { openSwap(el.getAttribute('data-slot')); };
+  A.tauschReset = function () {
+    var p = prof(); L.resetWeekSwaps(p); save(); render();
+    toast('Tausch zurückgesetzt – es gilt wieder der Wochenplan.');
   };
 
   // Profile
@@ -2717,6 +3435,39 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
     var p = prof();
     dialog({ title: 'Wenn-Dann-Plan', html: '<div class="txt"><p>Wann, wo und wie trainierst du? Ein konkreter Plan macht es dir leichter.</p></div>', input: { value: p.wennDannPlan, multi: true, rows: 3, max: 200 }, buttons: [{ label: 'Speichern', value: 'ok', cls: 'btn-primary' }, { label: 'Abbrechen', value: null }] })
       .then(function (r) { if (r.btn === 'ok') { p.wennDannPlan = r.text.trim(); save(); render(); } });
+  };
+
+  // Darstellung
+  A.farbe = function (el) {
+    var v = el.getAttribute('data-v');
+    if (L.FARBSCHEMATA.indexOf(v) < 0) return;
+    store.farbschema = v; save(); applyTheme(); render();
+  };
+  // Dauerhafte Ersetzungen verwalten
+  A.ersetzungen = function () {
+    var p = prof();
+    function liste() {
+      var keys = Object.keys(p.ersetzt || {});
+      if (!keys.length) return '<p class="empty-note">Keine dauerhaften Ersetzungen. Auf „Heute“ kannst du jede Übung über ⇄ tauschen und dabei „Dauerhaft ersetzen“ wählen.</p>';
+      return keys.map(function (b) {
+        return '<div class="ers-row"><div class="grow"><div class="ers-new">' + esc(EX[p.ersetzt[b]].name) + '</div><div class="ers-old">statt ' + esc(EX[b].name) + ' · ' + esc(FM.SLOTS[EX[b].slot].name) + '</div></div>' +
+          '<button class="btn btn-ghost btn-small" data-undo="' + b + '">Aufheben</button></div>';
+      }).join('');
+    }
+    dialog({
+      title: 'Dauerhaft ersetzte Übungen',
+      html: '<div class="txt"><p>Diese Übungen tauscht die App in allen Wochen automatisch aus.</p></div><div class="ers-list">' + liste() + '</div>',
+      buttons: [{ label: 'Fertig', value: null, cls: 'btn-primary' }],
+      onOpen: function (box) {
+        var lst = box.querySelector('.ers-list');
+        lst.addEventListener('click', function (ev) {
+          var b = ev.target.closest('[data-undo]');
+          if (!b) return;
+          L.removeReplacement(p, b.getAttribute('data-undo')); save();
+          lst.innerHTML = liste();
+        });
+      }
+    }).then(function () { render(); });
   };
 
   // Datensicherung
@@ -2803,12 +3554,27 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
         '<p>Anhaltende, sich verschlimmernde oder in den Arm ausstrahlende Nackenschmerzen sowie Taubheitsgefühle gehören ärztlich abgeklärt.</p></div>'
     });
   };
+  A.sicher = function () {
+    dialog({
+      title: 'Sicher trainieren',
+      html: '<div class="txt"><p>Faustregeln für jede Übung – besonders für Nacken und Schultern.</p></div>' +
+        '<div class="ampel"><div class="amp g"><b>Grün · weitermachen</b><span>Anstrengung, Muskelbrennen, leichtes Ziehen beim Dehnen.</span></div>' +
+        '<div class="amp y"><b>Gelb · leichter machen</b><span>Schmerz bis etwa 3 von 10, der nach dem Training rasch abklingt und am nächsten Tag nicht stärker ist. Kleiner bewegen oder über ⇄ die leichtere Variante wählen.</span></div>' +
+        '<div class="amp r"><b>Rot · sofort aufhören</b><span>Stechender oder einschießender Schmerz, Ausstrahlen in Arm oder Bein, Kribbeln oder Taubheit, Schwindel, Druck auf der Brust oder Atemnot. Ärztlich abklären lassen.</span></div></div>' +
+        '<div class="safe-list"><div><b>Weiteratmen</b><span>Nicht pressen – bei der Anstrengung ausatmen. Pressatmung treibt den Blutdruck hoch.</span></div>' +
+        '<div><b>Kontrolliert statt schnell</b><span>Lieber weniger Wiederholungen sauber als viele unsauber. Kein Schwung, kein Wippen.</span></div>' +
+        '<div><b>Kopf in Verlängerung</b><span>Bei Übungen am Boden geht der Blick zum Boden. Nie mit den Händen am Kopf ziehen.</span></div>' +
+        '<div><b>Richtig steigern</b><span>Fühlt sich eine Übung zwei Wochen lang leicht an, wähle über ⇄ die schwerere Variante.</span></div>' +
+        '<div><b>Muskelkater</b><span>In den ersten Wochen normal. Lockeres Weitertrainieren hilft – bei starkem Muskelkater die Bewegung kleiner halten.</span></div></div>' +
+        '<div class="txt"><p>' + HINWEIS_KURZ + '</p></div>'
+    });
+  };
   A.quellen = function () {
     dialog({
       title: 'Wissenschaftliche Quellen',
       html: '<div class="txt"><p>Auf diesen Studien und Leitlinien beruhen Trainingskonzept und Tipps. Schritte, Belastungsspitzen und Sterblichkeit stammen aus Beobachtungsstudien – sie zeigen Zusammenhänge, keinen Kausalbeweis.</p></div><ol>' +
         FM.QUELLEN.map(function (q) { return '<li>' + esc(q) + '</li>'; }).join('') + '</ol>' +
-        '<div class="txt" style="margin-top:12px"><p>Übungsreferenzen R1–R3 und S1–S5: <a href="' + FM.REF_LINKS.R.url + '" target="_blank" rel="noopener">' + esc(FM.REF_LINKS.R.titel) + '</a> und <a href="' + FM.REF_LINKS.S.url + '" target="_blank" rel="noopener">' + esc(FM.REF_LINKS.S.titel) + '</a>.</p></div>'
+        '<div class="txt" style="margin-top:12px"><p>Übungsreferenzen R1–R3 und S1–S5: <a href="' + FM.REF_LINKS.R.url + '" target="_blank" rel="noopener">' + esc(FM.REF_LINKS.R.titel) + '</a> und <a href="' + FM.REF_LINKS.S.url + '" target="_blank" rel="noopener">' + esc(FM.REF_LINKS.S.titel) + '</a>. Weitere Übungen ohne Geräte nach „Kraft mit Körper“ (TU Dresden) und dem AOK-Gesundheitsmagazin.</p></div>'
     });
   };
 
@@ -2821,6 +3587,15 @@ FM.WAKE_VIDEO = "data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wN
   }
   function init() {
     load();
+    applyTheme();
+    if (mqLight) {
+      var onScheme = function () {
+        if (!store || store.farbschema !== 'auto') return;
+        applyTheme();
+        if (!T && !$('#layer').innerHTML && !document.querySelector('.dlg-back')) render();
+      };
+      if (mqLight.addEventListener) mqLight.addEventListener('change', onScheme); else if (mqLight.addListener) mqLight.addListener(onScheme);
+    }
     document.addEventListener('click', dispatch);
     document.addEventListener('visibilitychange', function () {
       if (T && !T.ended) {
